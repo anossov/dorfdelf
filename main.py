@@ -20,6 +20,7 @@ import geometry
 #loadPrcFileData("", "want-directtools #t")
 #loadPrcFileData("", "want-tk #t")
 
+
 class Dorfdelf(ShowBase):
     def __init__(self):
         ShowBase.__init__(self)
@@ -84,7 +85,7 @@ class Dorfdelf(ShowBase):
 
         self.picked = self.loader.loadModel('media/picked.egg')
         self.picked.reparentTo(self.render)
-        self.picking_plane = None
+        self.picking_planes = [core.Plane(Vec3(0, 0, 1), Point3(0, 0, z + 1)) for z in range(self.world.depth)]
 
         tree = self.loader.loadModel('media/tree.egg')
         """
@@ -162,7 +163,6 @@ class Dorfdelf(ShowBase):
         self.zpointer.setPos(0.95, 0.0, self.current_slice * 2.0 / self.world.depth - 1.0)
 
         self.messenger.send('slice-changed', [self.current_slice, self.explore_mode])
-        self.picking_plane = core.Plane(Vec3(0, 0, 1), Point3(0, 0, self.current_slice + 1))
 
     def pick_block(self, task):
         if self.cc.moving:
@@ -175,15 +175,27 @@ class Dorfdelf(ShowBase):
             far = Point3()
 
             self.camLens.extrude(mouse_pos, near, far)
-            if self.picking_plane.intersectsLine(pos3d, self.render.getRelativePoint(self.cam, near), self.render.getRelativePoint(self.cam, far)):
-                worldpos = (int(bound(pos3d.x + 0.5, 0, self.world.width - 1)),
-                            int(bound(pos3d.y + 0.5, 0, self.world.height - 1)),
-                            int(bound(pos3d.z - 0.5, 0, self.world.depth - 1)))
+            worldpos = None
+            if self.explore_mode:
+                for pp in reversed(self.picking_planes):
+                    if pp.intersectsLine(pos3d, self.render.getRelativePoint(self.cam, near), self.render.getRelativePoint(self.cam, far)):
+                        wp = (int(bound(pos3d.x + 0.5, 0, self.world.width - 1)),
+                              int(bound(pos3d.y + 0.5, 0, self.world.height - 1)),
+                              int(bound(pos3d.z + 0.5, 0, self.world.depth - 1)))
 
-                if worldpos != self.picked_block:
-                    self.picked.setPos(*worldpos)
-                    self.picked_block = worldpos
-                    self.messenger.send('block-hover', [worldpos, self.world.get_block(*worldpos)])
+                        if not self.world.get_block(*wp).down.is_void:
+                            worldpos = wp
+                            break
+            else:
+                if self.picking_planes[self.current_slice].intersectsLine(pos3d, self.render.getRelativePoint(self.cam, near), self.render.getRelativePoint(self.cam, far)):
+                    worldpos = (int(bound(pos3d.x + 0.5, 0, self.world.width - 1)),
+                                int(bound(pos3d.y + 0.5, 0, self.world.height - 1)),
+                                int(bound(pos3d.z - 0.5, 0, self.world.depth - 1)))
+
+            if worldpos is not None and worldpos != self.picked_block:
+                self.picked.setPos(*worldpos)
+                self.picked_block = worldpos
+                self.messenger.send('block-hover', [worldpos, self.world.get_block(*worldpos)])
 
         return task.again
 
