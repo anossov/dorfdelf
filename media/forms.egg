@@ -1,0 +1,1950 @@
+<CoordinateSystem> { Y-Up }
+
+<Comment> {
+  "maya2egg2012 -o forms.egg Forms.mb"
+}
+<Texture> initialShadingGroup {
+  uv.png
+  <Scalar> wrapu { repeat }
+  <Scalar> wrapv { repeat }
+  <Scalar> minfilter { linear_mipmap_linear }
+  <Scalar> magfilter { linear }
+}
+<Group> groundPlane_transform {
+}
+<Group> "forms:Hidden" {
+  <VertexPool> "forms:HiddenShape.verts" {
+    <Vertex> 0 {
+      -0.5 1 0.5
+      <UV> { 0 0 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 1 0.5
+      <UV> { 1 0 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      0.5 1 -0.5
+      <UV> { 1 1 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      -0.5 1 -0.5
+      <UV> { 0 1 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0 1 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:HiddenShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 1 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 2 3 0 <Ref> { "forms:HiddenShape.verts" } }
+  }
+}
+<Group> "forms:Block" {
+  <VertexPool> "forms:BlockShape.verts" {
+    <Vertex> 0 {
+      -0.5 1 0.5
+      <UV> { 0.0228 0.5451 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 1 0.5
+      <UV> { 0.4576 0.5451 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      0.5 1 -0.5
+      <UV> { 0.4576 0.98 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      -0.5 1 -0.5
+      <UV> { 0.0228 0.98 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      -0.5 0 0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      0.5 0 0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      0.5 1 0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      -0.5 1 0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      0.5 0 0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      0.5 0 -0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      0.5 1 -0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      0.5 1 0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 12 {
+      0.5 0 -0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 13 {
+      -0.5 0 -0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 14 {
+      -0.5 1 -0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 15 {
+      0.5 1 -0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 16 {
+      -0.5 0 -0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 17 {
+      -0.5 0 0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 18 {
+      -0.5 1 0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 19 {
+      -0.5 1 -0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0 1 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:BlockShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 1 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 2 3 0 <Ref> { "forms:BlockShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 4 5 6 <Ref> { "forms:BlockShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 6 7 4 <Ref> { "forms:BlockShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 8 9 10 <Ref> { "forms:BlockShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 10 11 8 <Ref> { "forms:BlockShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 12 13 14 <Ref> { "forms:BlockShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 14 15 12 <Ref> { "forms:BlockShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 16 17 18 <Ref> { "forms:BlockShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 18 19 16 <Ref> { "forms:BlockShape.verts" } }
+  }
+}
+<Group> "forms:RampSW" {
+  <VertexPool> "forms:RampSWShape.verts" {
+    <Vertex> 0 {
+      -0.5 1 0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 1 0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      0.5 0 -0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      -0.5 0 0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      0.5 0 0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      0.5 1 0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      -0.5 1 0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      -0.5 0 -0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      -0.5 0 0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      -0.5 1 0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      -0.5 1 -0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      0.5 0 -0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 12 {
+      -0.5 1 -0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 13 {
+      -0.5 1 0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 14 {
+      0.5 0 0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 15 {
+      0.5 0 -0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 16 {
+      0.5 1 0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 17 {
+      0.5 0 -0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 18 {
+      -0.5 0 -0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 19 {
+      -0.5 1 -0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0 0.707107 -0.707107 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:RampSWShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 3 4 5 <Ref> { "forms:RampSWShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 5 6 3 <Ref> { "forms:RampSWShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 7 8 9 <Ref> { "forms:RampSWShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 9 10 7 <Ref> { "forms:RampSWShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0.707107 0.707107 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 11 12 13 <Ref> { "forms:RampSWShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 14 15 16 <Ref> { "forms:RampSWShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 17 18 19 <Ref> { "forms:RampSWShape.verts" } }
+  }
+}
+<Group> "forms:RampS" {
+  <VertexPool> "forms:RampSShape.verts" {
+    <Vertex> 0 {
+      -0.5 1 0.5
+      <UV> { 0.5598 0.4501 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 1 0.5
+      <UV> { 0.9261 0.4501 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      0.5 0 -0.5
+      <UV> { 0.9261 0.9681 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      -0.5 0 -0.5
+      <UV> { 0.5598 0.9681 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      -0.5 0 0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      0.5 0 0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      0.5 1 0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      -0.5 1 0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      0.5 0 0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      0.5 0 -0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      0.5 1 0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      -0.5 0 -0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 12 {
+      -0.5 0 0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 13 {
+      -0.5 1 0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0 0.707107 -0.707107 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:RampSShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0.707107 -0.707107 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 2 3 0 <Ref> { "forms:RampSShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 4 5 6 <Ref> { "forms:RampSShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 6 7 4 <Ref> { "forms:RampSShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 8 9 10 <Ref> { "forms:RampSShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 11 12 13 <Ref> { "forms:RampSShape.verts" } }
+  }
+}
+<Group> "forms:RampES" {
+  <VertexPool> "forms:RampESShape.verts" {
+    <Vertex> 0 {
+      0.5 1 0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 1 -0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      -0.5 0 -0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      -0.5 0 0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      0.5 0 0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      0.5 1 0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      -0.5 1 0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      0.5 0 0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      0.5 0 -0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      0.5 1 -0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      0.5 1 0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      -0.5 0 -0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 12 {
+      -0.5 1 0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 13 {
+      0.5 1 0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 14 {
+      -0.5 0 -0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 15 {
+      -0.5 0 0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 16 {
+      -0.5 1 0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 17 {
+      0.5 0 -0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 18 {
+      -0.5 0 -0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 19 {
+      0.5 1 -0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { -0.707107 0.707107 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:RampESShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 3 4 5 <Ref> { "forms:RampESShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 5 6 3 <Ref> { "forms:RampESShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 7 8 9 <Ref> { "forms:RampESShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 9 10 7 <Ref> { "forms:RampESShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0.707107 -0.707107 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 11 12 13 <Ref> { "forms:RampESShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 14 15 16 <Ref> { "forms:RampESShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 17 18 19 <Ref> { "forms:RampESShape.verts" } }
+  }
+}
+<Group> "forms:RampE" {
+  <VertexPool> "forms:RampEShape.verts" {
+    <Vertex> 0 {
+      -0.5 0 0.5
+      <UV> { 0.5598 0.9681 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 1 0.5
+      <UV> { 0.5598 0.4501 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      0.5 1 -0.5
+      <UV> { 0.9261 0.4501 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      -0.5 0 -0.5
+      <UV> { 0.9261 0.9681 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      0.5 0 0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      0.5 0 -0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      0.5 1 -0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      0.5 1 0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      -0.5 0 0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      0.5 0 0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      0.5 1 0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      0.5 0 -0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 12 {
+      -0.5 0 -0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 13 {
+      0.5 1 -0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { -0.707107 0.707107 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:RampEShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -0.707107 0.707107 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 2 3 0 <Ref> { "forms:RampEShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 4 5 6 <Ref> { "forms:RampEShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 6 7 4 <Ref> { "forms:RampEShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 8 9 10 <Ref> { "forms:RampEShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 11 12 13 <Ref> { "forms:RampEShape.verts" } }
+  }
+}
+<Group> "forms:RampNE" {
+  <VertexPool> "forms:RampNEShape.verts" {
+    <Vertex> 0 {
+      -0.5 0 0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 1 -0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      -0.5 1 -0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      0.5 0 0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      0.5 0 -0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      0.5 1 -0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      0.5 1 0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      0.5 0 -0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      -0.5 0 -0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      -0.5 1 -0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      0.5 1 -0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      -0.5 0 0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 12 {
+      0.5 1 0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 13 {
+      0.5 1 -0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 14 {
+      -0.5 0 0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 15 {
+      0.5 0 0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 16 {
+      0.5 1 0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 17 {
+      -0.5 0 -0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 18 {
+      -0.5 0 0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 19 {
+      -0.5 1 -0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0 0.707107 0.707107 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:RampNEShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 3 4 5 <Ref> { "forms:RampNEShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 5 6 3 <Ref> { "forms:RampNEShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 7 8 9 <Ref> { "forms:RampNEShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 9 10 7 <Ref> { "forms:RampNEShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -0.707107 0.707107 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 11 12 13 <Ref> { "forms:RampNEShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 14 15 16 <Ref> { "forms:RampNEShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 17 18 19 <Ref> { "forms:RampNEShape.verts" } }
+  }
+}
+<Group> "forms:RampESRamp" {
+  <VertexPool> "forms:RampESRampShape.verts" {
+    <Vertex> 0 {
+      0.5 0 -0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      -0.5 0 -0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      0.5 1 0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      -0.5 0 -0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      -0.5 0 0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      0.5 1 0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      -0.5 0 0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      0.5 0 0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      0.5 1 0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      0.5 0 0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      0.5 0 -0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      0.5 1 0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0 0.707107 -0.707107 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:RampESRampShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -0.707107 0.707107 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 3 4 5 <Ref> { "forms:RampESRampShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 6 7 8 <Ref> { "forms:RampESRampShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 9 10 11 <Ref> { "forms:RampESRampShape.verts" } }
+  }
+}
+<Group> "forms:RampW" {
+  <VertexPool> "forms:RampWShape.verts" {
+    <Vertex> 0 {
+      -0.5 1 0.5
+      <UV> { 0.9261 0.4501 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 0 0.5
+      <UV> { 0.9261 0.9681 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      0.5 0 -0.5
+      <UV> { 0.5598 0.9681 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      -0.5 1 -0.5
+      <UV> { 0.5598 0.4501 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      -0.5 0 -0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      -0.5 0 0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      -0.5 1 0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      -0.5 1 -0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      -0.5 0 0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      0.5 0 0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      -0.5 1 0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      0.5 0 -0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 12 {
+      -0.5 0 -0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 13 {
+      -0.5 1 -0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0.707107 0.707107 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:RampWShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0.707107 0.707107 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 2 3 0 <Ref> { "forms:RampWShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 4 5 6 <Ref> { "forms:RampWShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 6 7 4 <Ref> { "forms:RampWShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 8 9 10 <Ref> { "forms:RampWShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 11 12 13 <Ref> { "forms:RampWShape.verts" } }
+  }
+}
+<Group> "forms:RampSWRamp" {
+  <VertexPool> "forms:RampSWRampShape.verts" {
+    <Vertex> 0 {
+      0.5 0 0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 0 -0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      -0.5 1 0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      0.5 0 -0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      -0.5 0 -0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      -0.5 1 0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { 0 0.707107 -0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      -0.5 0 -0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      -0.5 0 0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      -0.5 1 0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      -0.5 0 0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      0.5 0 0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      -0.5 1 0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0.707107 0.707107 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:RampSWRampShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0.707107 -0.707107 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 3 4 5 <Ref> { "forms:RampSWRampShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 6 7 8 <Ref> { "forms:RampSWRampShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 9 10 11 <Ref> { "forms:RampSWRampShape.verts" } }
+  }
+}
+<Group> "forms:RampNERamp" {
+  <VertexPool> "forms:RampNERampShape.verts" {
+    <Vertex> 0 {
+      -0.5 0 -0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      -0.5 0 0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      0.5 1 -0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { -0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      -0.5 0 0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      0.5 0 0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      0.5 1 -0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      0.5 0 0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      0.5 0 -0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      0.5 1 -0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      0.5 0 -0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      -0.5 0 -0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      0.5 1 -0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { -0.707107 0.707107 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:RampNERampShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0.707107 0.707107 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 3 4 5 <Ref> { "forms:RampNERampShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 6 7 8 <Ref> { "forms:RampNERampShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 9 10 11 <Ref> { "forms:RampNERampShape.verts" } }
+  }
+}
+<Group> "forms:RampWN" {
+  <VertexPool> "forms:RampWNShape.verts" {
+    <Vertex> 0 {
+      -0.5 1 0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 0 0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      -0.5 1 -0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      0.5 0 -0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      -0.5 0 -0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      -0.5 1 -0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      0.5 1 -0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      -0.5 0 -0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      -0.5 0 0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      -0.5 1 0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      -0.5 1 -0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      0.5 0 0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 12 {
+      0.5 1 -0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 13 {
+      -0.5 1 -0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 14 {
+      0.5 0 0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 15 {
+      0.5 0 -0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 16 {
+      0.5 1 -0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 17 {
+      -0.5 0 0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 18 {
+      0.5 0 0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 19 {
+      -0.5 1 0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0.707107 0.707107 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:RampWNShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 3 4 5 <Ref> { "forms:RampWNShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 5 6 3 <Ref> { "forms:RampWNShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 7 8 9 <Ref> { "forms:RampWNShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 9 10 7 <Ref> { "forms:RampWNShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0.707107 0.707107 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 11 12 13 <Ref> { "forms:RampWNShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 14 15 16 <Ref> { "forms:RampWNShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 17 18 19 <Ref> { "forms:RampWNShape.verts" } }
+  }
+}
+<Group> "forms:RampWNRamp" {
+  <VertexPool> "forms:RampWNRampShape.verts" {
+    <Vertex> 0 {
+      -0.5 0 0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 0 0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      -0.5 1 -0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      0.5 0 0.5
+      <UV> { 0.6272 0.3757 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      0.5 0 -0.5
+      <UV> { 0.9098 0.4252 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      -0.5 1 -0.5
+      <UV> { 0.9798 0.0256 }
+      <Normal> { 0.707107 0.707107 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      0.5 0 -0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      -0.5 0 -0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      -0.5 1 -0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      -0.5 0 -0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      -0.5 0 0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      -0.5 1 -0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0 0.707107 0.707107 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:RampWNRampShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0.707107 0.707107 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 3 4 5 <Ref> { "forms:RampWNRampShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 6 7 8 <Ref> { "forms:RampWNRampShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 9 10 11 <Ref> { "forms:RampWNRampShape.verts" } }
+  }
+}
+<Group> "forms:RampN" {
+  <VertexPool> "forms:RampNShape.verts" {
+    <Vertex> 0 {
+      -0.5 0 0.5
+      <UV> { 0.9261 0.9681 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 0 0.5
+      <UV> { 0.5598 0.9681 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      0.5 1 -0.5
+      <UV> { 0.5598 0.4501 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      -0.5 1 -0.5
+      <UV> { 0.9261 0.4501 }
+      <Normal> { 0 0.707107 0.707107 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      0.5 0 -0.5
+      <UV> { 0.0242 0.0966 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      -0.5 0 -0.5
+      <UV> { 0.4559 0.0966 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      -0.5 1 -0.5
+      <UV> { 0.4559 0.5283 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      0.5 1 -0.5
+      <UV> { 0.0242 0.5283 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      0.5 0 0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      0.5 0 -0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      0.5 1 -0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      -0.5 0 -0.5
+      <UV> { 0.4897 0.0214 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 12 {
+      -0.5 0 0.5
+      <UV> { 0.9484 0.0214 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 13 {
+      -0.5 1 -0.5
+      <UV> { 0.4897 0.4801 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0 0.707107 0.707107 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:RampNShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0.707107 0.707107 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 2 3 0 <Ref> { "forms:RampNShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 4 5 6 <Ref> { "forms:RampNShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 6 7 4 <Ref> { "forms:RampNShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 8 9 10 <Ref> { "forms:RampNShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 11 12 13 <Ref> { "forms:RampNShape.verts" } }
+  }
+}
+<Group> "forms:Floor" {
+  <VertexPool> "forms:FloorShape.verts" {
+    <Vertex> 0 {
+      -0.5 0.1 0.5
+      <UV> { 0.0228 0.5451 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 0.1 0.5
+      <UV> { 0.4576 0.5451 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      0.5 0.1 -0.5
+      <UV> { 0.4576 0.98 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      -0.5 0.1 -0.5
+      <UV> { 0.0228 0.98 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 4 {
+      -0.5 0 0.5
+      <UV> { 0.0327 0.0129 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 5 {
+      0.5 0 0.5
+      <UV> { 0.4496 0.0129 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 6 {
+      0.5 0.1 0.5
+      <UV> { 0.4496 0.0546 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 7 {
+      -0.5 0.1 0.5
+      <UV> { 0.0327 0.0546 }
+      <Normal> { 0 0 1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 8 {
+      0.5 0 0.5
+      <UV> { 0.0327 0.0129 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 9 {
+      0.5 0 -0.5
+      <UV> { 0.4496 0.0129 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 10 {
+      0.5 0.1 -0.5
+      <UV> { 0.4496 0.0546 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 11 {
+      0.5 0.1 0.5
+      <UV> { 0.0327 0.0546 }
+      <Normal> { 1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 12 {
+      0.5 0 -0.5
+      <UV> { 0.0327 0.0129 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 13 {
+      -0.5 0 -0.5
+      <UV> { 0.4496 0.0129 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 14 {
+      -0.5 0.1 -0.5
+      <UV> { 0.4496 0.0546 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 15 {
+      0.5 0.1 -0.5
+      <UV> { 0.0327 0.0546 }
+      <Normal> { 0 0 -1 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 16 {
+      -0.5 0 -0.5
+      <UV> { 0.0327 0.0129 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 17 {
+      -0.5 0 0.5
+      <UV> { 0.4496 0.0129 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 18 {
+      -0.5 0.1 0.5
+      <UV> { 0.4496 0.0546 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 19 {
+      -0.5 0.1 -0.5
+      <UV> { 0.0327 0.0546 }
+      <Normal> { -1 0 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0 1 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:FloorShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 1 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 2 3 0 <Ref> { "forms:FloorShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 4 5 6 <Ref> { "forms:FloorShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 6 7 4 <Ref> { "forms:FloorShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 8 9 10 <Ref> { "forms:FloorShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 10 11 8 <Ref> { "forms:FloorShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 12 13 14 <Ref> { "forms:FloorShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 0 -1 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 14 15 12 <Ref> { "forms:FloorShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 16 17 18 <Ref> { "forms:FloorShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { -1 0 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 18 19 16 <Ref> { "forms:FloorShape.verts" } }
+  }
+}
+<Group> "forms:CubeTop" {
+  <VertexPool> "forms:CubeTopShape.verts" {
+    <Vertex> 0 {
+      -0.5 1 0.5
+      <UV> { 0.0228 0.5451 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 1 {
+      0.5 1 0.5
+      <UV> { 0.4576 0.5451 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 2 {
+      0.5 1 -0.5
+      <UV> { 0.4576 0.98 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+    <Vertex> 3 {
+      -0.5 1 -0.5
+      <UV> { 0.0228 0.98 }
+      <Normal> { 0 1 0 }
+      <RGBA> { 1 1 1 1 }
+    }
+  }
+  <Polygon> {
+    <Normal> { 0 1 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 0 1 2 <Ref> { "forms:CubeTopShape.verts" } }
+  }
+  <Polygon> {
+    <Normal> { 0 1 0 }
+    <TRef> { initialShadingGroup }
+    <VertexRef> { 2 3 0 <Ref> { "forms:CubeTopShape.verts" } }
+  }
+}
