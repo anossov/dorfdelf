@@ -3,7 +3,7 @@ import random
 import json
 
 import panda3d.core as core
-
+from direct.showbase.MessengerGlobal import messenger
 
 def load_forms():
     models = loader.loadModel('media/forms.egg')
@@ -240,6 +240,9 @@ class World(object):
     def columns(self):
         for x, y in itertools.product(range(self.width), range(self.height)):
             yield x, y
+
+    def zlevels(self):
+        return range(self.depth)
 
     def make_ramp(self, x, y, z, generation=False):
         b = self.get_block(x, y, z)

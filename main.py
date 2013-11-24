@@ -5,7 +5,6 @@ from collections import Counter
 
 from direct.showbase.ShowBase import ShowBase
 from direct.showbase.PythonUtil import bound
-from direct.gui.OnscreenImage import OnscreenImage
 
 
 import panda3d.core as core
@@ -16,9 +15,11 @@ import world
 import camera
 import gui
 import geometry
+import block_picker
 
 #loadPrcFileData("", "want-directtools #t")
 #loadPrcFileData("", "want-tk #t")
+
 
 
 class Dorfdelf(ShowBase):
@@ -83,9 +84,6 @@ class Dorfdelf(ShowBase):
 
         self.accept('mouse1', self.toggle_block)
 
-        self.picked = self.loader.loadModel('media/picked.egg')
-        self.picked.reparentTo(self.render)
-        self.picking_planes = [core.Plane(Vec3(0, 0, 1), Point3(0, 0, z + 1)) for z in range(self.world.depth)]
 
         tree = self.loader.loadModel('media/tree.egg')
         """
@@ -148,8 +146,8 @@ class Dorfdelf(ShowBase):
 
         self.change_slice(0)
 
-        self.picked_block = None
-        self.taskMgr.add(self.pick_block, "Pick block")
+        self.picker = block_picker.BlockPicker(self.world, self)
+
         print 'Init done'
 
     def toggle_explore(self):
@@ -164,54 +162,19 @@ class Dorfdelf(ShowBase):
 
         self.messenger.send('slice-changed', [self.current_slice, self.explore_mode])
 
-    def pick_block(self, task):
-        if self.cc.moving:
-            return task.again
-
-        if self.mouseWatcherNode.hasMouse():
-            mouse_pos = self.mouseWatcherNode.getMouse()
-            pos3d = Point3()
-            near = Point3()
-            far = Point3()
-
-            self.camLens.extrude(mouse_pos, near, far)
-            worldpos = None
-            if self.explore_mode:
-                for pp in reversed(self.picking_planes):
-                    if pp.intersectsLine(pos3d, self.render.getRelativePoint(self.cam, near), self.render.getRelativePoint(self.cam, far)):
-                        wp = (int(bound(pos3d.x + 0.5, 0, self.world.width - 1)),
-                              int(bound(pos3d.y + 0.5, 0, self.world.height - 1)),
-                              int(bound(pos3d.z + 0.5, 0, self.world.depth - 1)))
-
-                        if not self.world.get_block(*wp).down.is_void:
-                            worldpos = wp
-                            break
-            else:
-                if self.picking_planes[self.current_slice].intersectsLine(pos3d, self.render.getRelativePoint(self.cam, near), self.render.getRelativePoint(self.cam, far)):
-                    worldpos = (int(bound(pos3d.x + 0.5, 0, self.world.width - 1)),
-                                int(bound(pos3d.y + 0.5, 0, self.world.height - 1)),
-                                int(bound(pos3d.z - 0.5, 0, self.world.depth - 1)))
-
-            if worldpos is not None and worldpos != self.picked_block:
-                self.picked.setPos(*worldpos)
-                self.picked_block = worldpos
-                self.messenger.send('block-hover', [worldpos, self.world.get_block(*worldpos)])
-
-        return task.again
-
     def toggle_block(self):
-        if not self.picked_block:
+        if not self.picker.picked:
             return
 
-        b = self.world.get_block(*self.picked_block)
+        b = self.world.get_block(*self.picker.picked)
 
         if b.is_ramp:
-            b.update(self.world.forms['Void'], 0, False, self.picked_block)
+            b.update(self.world.forms['Void'], 0, False, self.picker.picked)
         elif b.is_void:
-            b.update(self.world.forms['Block'], 1, False, self.picked_block)
+            b.update(self.world.forms['Block'], 1, False, self.picker.picked)
         elif b.is_block:
-            if not self.world.make_ramp(*self.picked_block):
-                b.update(self.world.forms['Void'], 0, False, self.picked_block)
+            if not self.world.make_ramp(*self.picker.picked):
+                b.update(self.world.forms['Void'], 0, False, self.picker.picked)
 
     def movedorf(self, task):
         c = self.dorf.getPos()
