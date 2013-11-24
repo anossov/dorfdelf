@@ -237,6 +237,10 @@ class World(object):
             b = self.get_block(x, y, z)
             yield x, y, z, b
 
+    def slice(self, z):
+        for x, y in self.columns():
+            yield x, y, self.get_block(x, y, z)
+
     def columns(self):
         for x, y in itertools.product(range(self.width), range(self.height)):
             yield x, y

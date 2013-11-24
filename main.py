@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 
 import random
-from collections import Counter
 
 from direct.showbase.ShowBase import ShowBase
 from direct.showbase.PythonUtil import bound
@@ -16,10 +15,10 @@ import camera
 import gui
 import geometry
 import block_picker
+import zmap
 
 #loadPrcFileData("", "want-directtools #t")
 #loadPrcFileData("", "want-tk #t")
-
 
 
 class Dorfdelf(ShowBase):
@@ -84,22 +83,6 @@ class Dorfdelf(ShowBase):
 
         self.accept('mouse1', self.toggle_block)
 
-
-        tree = self.loader.loadModel('media/tree.egg')
-        """
-        for x, y in self.world.columns():
-            z = self.world.depth - 1
-            while z > 0:
-                b = self.world.get_block(x, y, z)
-                if b.is_block:
-                    if random.random() > 0.95:
-                        treeholder = self.render.attachNewNode('tree')
-                        treeholder.setPos(x, y, z + 1)
-                        tree.instanceTo(treeholder)
-                if not b.is_void:
-                    break
-                z -= 1
-        """
         self.dorfd = (1, 0, 0)
         self.dorf = self.loader.loadModel('media/dorfPH.egg')
         self.dorf.reparentTo(self.render)
@@ -113,40 +96,10 @@ class Dorfdelf(ShowBase):
 
         self.taskMgr.doMethodLater(0.5, self.movedorf, 'dorf')
 
-        self.zmap = core.PNMImage(1, 256)
-        colors = [
-            VBase3D(0.7, 0.7, 0.9),
-            VBase3D(0.4, 0.5, 0.1),
-            VBase3D(0.6, 0.6, 0.6)
-        ]
-
-        def get_color(b):
-            return colors[b.substance]
-
-        for z in range(self.world.depth):
-            types = Counter(get_color(self.world.get_block(x, y, z)) for x, y in self.world.columns())
-            self.zmap.setXel(0, z, types.most_common(1)[0][0])
-
-        tex = core.Texture()
-        tex.load(self.zmap)
-        tex.setMagfilter(core.Texture.FTNearest)
-        tex.setMinfilter(core.Texture.FTLinearMipmapLinear)
-
-        cm = core.CardMaker('z')
-        cm.setFrame(0.98, 1, -1, 1)
-        cm.setUvRange(Point2(1.0, 1.0),
-                      Point2(0.0, 1.0 - self.world.depth / 256.0))
-        self.zcard = self.render2d.attachNewNode(cm.generate())
-        self.zcard.setTexture(tex)
-
-        cm = core.CardMaker('zpointer')
-        cm.setFrame(0, 0.05, 0, 1.0 / self.world.depth)
-        self.zpointer = self.render2d.attachNewNode(cm.generate())
-        self.zpointer.setColorScale(1.0, 0.0, 0.0, 0.4)
+        self.picker = block_picker.BlockPicker(self.world, self)
+        self.zmap = zmap.ZMap(self.world, self)
 
         self.change_slice(0)
-
-        self.picker = block_picker.BlockPicker(self.world, self)
 
         print 'Init done'
 
@@ -155,11 +108,7 @@ class Dorfdelf(ShowBase):
         self.change_slice(0)
 
     def change_slice(self, n):
-        if n:
-            self.current_slice = bound(self.current_slice + n, 0, self.world.depth - 1)
-
-        self.zpointer.setPos(0.95, 0.0, self.current_slice * 2.0 / self.world.depth - 1.0)
-
+        self.current_slice = bound(self.current_slice + n, 0, self.world.depth - 1)
         self.messenger.send('slice-changed', [self.current_slice, self.explore_mode])
 
     def toggle_block(self):

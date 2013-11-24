@@ -43,7 +43,7 @@ class CameraController(DirectObject):
         self.accept('mouse2', self.start_zoom)
         self.accept('mouse2-up', self.end_zoom)
 
-        taskmgr.add(self.move_camera, "MoveCameraTask")
+        taskmgr.add(self.move_camera, "Move Camera")
 
     def key(self, key, down):
         self.keys[key] = down

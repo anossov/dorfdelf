@@ -63,19 +63,22 @@ class BlockPicker(DirectObject):
             near = Point3()
             far = Point3()
             self.app.camLens.extrude(mouse_pos, near, far)
-            if self.constraint == BlockPicker.SURFACE:
-                for z in reversed(self.world.zlevels()):
-                    point = self.pick_point(z, near, far)
-                    picked = self.clamp_point(point, (0.5, 0.5, 0.5))
-                    if not self.world.get_block(*picked).down.is_void:
-                        self.set_picked(picked)
-                        return task.again
+            try:
+                if self.constraint == BlockPicker.SURFACE:
+                    for z in reversed(self.world.zlevels()):
+                        point = self.pick_point(z, near, far)
+                        picked = self.clamp_point(point, (0.5, 0.5, 0.5))
+                        if not self.world.get_block(*picked).down.is_void:
+                            self.set_picked(picked)
+                            return task.again
 
-            if self.constraint == BlockPicker.SLICE:
-                point = self.pick_point(self.slice, near, far)
-                picked = self.clamp_point(point, (0.5, 0.5, -0.5))
-                self.set_picked(picked)
-                return task.again
+                if self.constraint == BlockPicker.SLICE:
+                    point = self.pick_point(self.slice, near, far)
+                    picked = self.clamp_point(point, (0.5, 0.5, -0.5))
+                    self.set_picked(picked)
+                    return task.again
+            except ValueError:
+                pass
 
         return task.again
 
