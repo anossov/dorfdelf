@@ -4,31 +4,71 @@ import math
 
 import panda3d.core as core
 from direct.showbase.DirectObject import DirectObject
+from direct.task.TaskManagerGlobal import taskMgr
 
 
 class GeomBuilder(object):
-    def __init__(self, name):
-        self.total_vertices = 0
+    def __init__(self, name, master):
         self.name = name
-        self.vertexformat = core.GeomVertexFormat.getV3n3t2()
-        self.vertexdata = core.GeomVertexData(self.name, self.vertexformat, core.Geom.UHStatic)
+        self.master = master
         self.primitive = core.GeomTriangles(core.Geom.UHStatic)
-        self.vertex_writer = core.GeomVertexWriter(self.vertexdata, 'vertex')
-        self.normal_writer = core.GeomVertexWriter(self.vertexdata, 'normal')
-        self.texcoord_writer = core.GeomVertexWriter(self.vertexdata, 'texcoord')
-        self.geom = None
+
+    def add_block(self, x, y, b):
+        if b.hidden:
+            form = b.FORMS['Hidden']
+        else:
+            form = b.form
+        for i in form.indices:
+            offset = self.master.index_offset(x, y, form)
+            self.primitive.addVertex(i + offset)
 
     def build(self):
-        self.geom = core.Geom(self.vertexdata)
-        self.geom.addPrimitive(self.primitive)
+        geom = core.Geom(self.master.vertexdata)
+        geom.addPrimitive(self.primitive)
         gnode = core.GeomNode('{}-node'.format(self.name))
-        gnode.addGeom(self.geom)
+        gnode.addGeom(geom)
         return gnode
 
 
+class MasterChunk(object):
+    def __init__(self, size, forms):
+        self.size = size
+        self.vertexformat = core.GeomVertexFormat.getV3n3t2()
+        self.vertexdata = core.GeomVertexData('MasterChunk', self.vertexformat, core.Geom.UHStatic)
+
+        vertex_writer = core.GeomVertexWriter(self.vertexdata, 'vertex')
+        normal_writer = core.GeomVertexWriter(self.vertexdata, 'normal')
+        texcoord_writer = core.GeomVertexWriter(self.vertexdata, 'texcoord')
+
+        self.index_offsets = {}
+
+        total = 0
+        for form in forms:
+            self.index_offsets[form.name] = total
+            total += form.num_vertices
+
+        self.stride = total
+
+        for x, y in itertools.product(range(self.size), range(self.size)):
+            for form in forms:
+                for v, n, t in form.vertices:
+                    vertex_writer.addData3f(v[0] + x, v[1] + y, v[2])
+                    normal_writer.addData3f(*n)
+                    texcoord_writer.addData2f(*t)
+
+    def index_offset(self, x, y, form):
+        return self.stride * (x * self.size + y) + self.index_offsets[form.name]
+
+
 class Slice(core.NodePath):
+    chunk_size = 16
+    master = None
+
     def __init__(self, world, z):
         core.NodePath.__init__(self, 'slice-{}'.format(z))
+
+        if Slice.master is None:
+            Slice.master = MasterChunk(self.chunk_size, world.forms.values())
 
         self.world = world
         self.z = z
@@ -39,11 +79,15 @@ class Slice(core.NodePath):
         self.setPos(0, 0, z)
 
         self.substances = [None] + [
-            loader.loadTexture('media/{}.png'.format(name), anisotropicDegree=16, minfilter=core.Texture.FTLinearMipmapLinear)
+            loader.loadTexture('media/{}.png'.format(name),
+                               anisotropicDegree=16,
+                               minfilter=core.Texture.FTLinearMipmapLinear)
             for name in ['dirt', 'stone']
         ]
 
-        self.hiddentexture = loader.loadTexture('media/hidden.png', anisotropicDegree=16, minfilter=core.Texture.FTLinearMipmapLinear)
+        self.hiddentexture = loader.loadTexture('media/hidden.png',
+                                                anisotropicDegree=16,
+                                                minfilter=core.Texture.FTLinearMipmapLinear)
         self.hiddentexture.setWrapU(core.Texture.WMClamp)
         self.hiddentexture.setWrapV(core.Texture.WMClamp)
 
@@ -53,9 +97,6 @@ class Slice(core.NodePath):
             if b.substance:
                 blocks += 1
 
-        chunks = max(1, blocks / 256)
-        self.chunk_size = 2 ** int(math.log(self.world.width / math.sqrt(chunks), 2))
-
         self.updates = set()
         for cx, cy in itertools.product(range(self.world.width // self.chunk_size), range(self.world.height // self.chunk_size)):
             self.build_chunk(cx, cy)
@@ -63,7 +104,7 @@ class Slice(core.NodePath):
         taskMgr.add(self.perform_updates, 'Slice update')
 
     def build_chunk(self, cx, cy):
-        hbuilder = GeomBuilder('slice-{}-hidden'.format(self.z))
+        hbuilder = GeomBuilder('slice-{}-hidden'.format(self.z), self.master)
         builders = {}
 
         chunk_size = self.chunk_size
@@ -75,13 +116,14 @@ class Slice(core.NodePath):
                 continue
 
             if b.substance not in builders:
-                builders[b.substance] = GeomBuilder('slice-{}-geom-{}'.format(self.z, b.substance))
+                builders[b.substance] = GeomBuilder('slice-{}-geom-{}'.format(self.z, b.substance), self.master)
 
-            builder = builders[b.substance]
             if b.hidden:
-                b.write_vertices(x, y, 0, hbuilder)
+                builder = hbuilder
             else:
-                b.write_vertices(x, y, 0, builder)
+                builder = builders[b.substance]
+
+            builder.add_block(x, y, b)
 
         chunk_size = self.chunk_size
         old = self.chunks.get((cx, cy))

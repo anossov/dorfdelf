@@ -3,6 +3,7 @@ from direct.showbase.PythonUtil import bound
 
 from panda3d.core import Point3, Vec3, Plane
 
+
 class BlockPicker(DirectObject):
     SURFACE = 0
     SLICE = 1

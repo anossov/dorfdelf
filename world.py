@@ -68,22 +68,6 @@ class Block(object):
         self.hidden = hidden
         self.neighbours = {}
 
-    def write_vertices(self, x_offset, y_offset, z_offset, builder):
-        if self.hidden:
-            form = Block.FORMS['Hidden']
-        else:
-            form = self.form
-
-        for v, n, t in form.vertices:
-            builder.vertex_writer.addData3f(v[0] + x_offset, v[1] + y_offset, v[2] + z_offset)
-            builder.normal_writer.addData3f(*n)
-            builder.texcoord_writer.addData2f(*t)
-
-        for i in form.indices:
-            builder.primitive.addVertex(builder.total_vertices + i)
-
-        builder.total_vertices += form.num_vertices
-
     @property
     def passable(self):
         return self.form.name == 'Void'

@@ -86,6 +86,7 @@ class Dorfdelf(ShowBase):
 
         self.change_slice(0)
 
+        self.render.analyze()
         print 'Init done'
 
     def add_dorf(self):
