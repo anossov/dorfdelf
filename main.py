@@ -18,6 +18,7 @@ import geometry
 import block_picker
 import zmap
 import console
+import dorf
 
 #loadPrcFileData("", "want-directtools #t")
 #loadPrcFileData("", "want-tk #t")
@@ -77,18 +78,7 @@ class Dorfdelf(ShowBase):
 
         self.accept('console-command', self.console_command)
 
-        self.dorfd = (1, 0, 0)
-        self.dorf = self.loader.loadModel('media/dorfPH.egg')
-        self.dorf.reparentTo(self.render)
-        for z in reversed(range(self.world.depth)):
-            b = self.world.get_block(32, 32, z)
-            if not b.is_void:
-                self.dorf.setPos(32, 32, z + 1)
-                if not b.is_block:
-                    b.update(self.world.forms['Block'], b.substance, False, (32, 32, z))
-                break
-
-        self.taskMgr.doMethodLater(0.5, self.movedorf, 'dorf')
+        self.dorfs = []
 
         self.console = console.Console(self)
         self.picker = block_picker.BlockPicker(self.world, self)
@@ -97,6 +87,18 @@ class Dorfdelf(ShowBase):
         self.change_slice(0)
 
         print 'Init done'
+
+    def add_dorf(self):
+        x, y = random.randint(0, self.world.width), random.randint(0, self.world.height)
+        for z in reversed(range(self.world.depth)):
+            b = self.world.get_block(x, y, z)
+            if not b.is_void:
+                d = dorf.Dorf(Point3(x, y, z + 1), self.world)
+                d.node.reparentTo(self.render)
+                self.dorfs.append(d)
+                if not b.is_block:
+                    b.update(self.world.forms['Block'], b.substance, False, (32, 32, z))
+                break
 
     def accept_keyboard(self):
         self.accept('e-repeat', self.change_slice, [-1])
@@ -130,6 +132,14 @@ class Dorfdelf(ShowBase):
         if cmd == 'slice':
             n = args[0]
             self.change_slice(int(n), rel=args[0][0] in '-+')
+        if cmd == 'wire':
+            self.toggleWireframe()
+        if cmd == 'texmem':
+            self.toggleTexMem()
+        if cmd == 'texture':
+            self.toggleTexture()
+        if cmd == 'dorf':
+            self.add_dorf()
 
     def toggle_explore(self):
         self.explore_mode = not self.explore_mode
@@ -153,37 +163,6 @@ class Dorfdelf(ShowBase):
         elif b.is_block:
             if not self.world.make_ramp(*self.picker.picked):
                 b.update(self.world.forms['Void'], 0, False, self.picker.picked)
-
-    def movedorf(self, task):
-        c = self.dorf.getPos()
-
-        if random.random() > 0.7 and c + self.dorfd in self.world:
-            d = self.dorfd
-        else:
-            ds = [i for i in [(1, 0, 0), (0, 1, 0), (0, -1, 0), (-1, 0, 0)] if c + i in self.world]
-            d = random.choice(ds)
-            self.dorfd = d
-
-        t = c + d
-
-        self.dorf.lookAt(t)
-        self.dorf.setPos(t)
-
-        cwp = int(c.x), int(c.y), int(c.z)
-        wp = int(t.x), int(t.y), int(t.z)
-        cb = self.world.get_block(*cwp)
-        b = self.world.get_block(*wp)
-        if not b.is_void:
-            if cb.is_ramp:
-                self.dorf.setPos(self.dorf, (0, 0, -0.5))
-            b.update(self.world.forms['Void'], 0, False, wp)
-        else:
-            if b.down.is_ramp:
-                self.dorf.setPos(self.dorf, (0, 0, -0.5))
-            if b.down.is_void:
-                self.dorf.setPos(self.dorf, (0, 0, -1.0))
-
-        return task.again
 
 
 app = Dorfdelf()
