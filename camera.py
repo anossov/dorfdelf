@@ -19,8 +19,6 @@ class CameraController(DirectObject):
             's': False,
             'd': False,
             'a': False,
-            'q': False,
-            'e': False,
         }
 
         self.drag = None
@@ -28,14 +26,9 @@ class CameraController(DirectObject):
         self.moving = False
         self.panning = False
 
-        self.accept('d', self.key, ['d', True])
-        self.accept('d-up', self.key, ['d', False])
-        self.accept('w', self.key, ['w', True])
-        self.accept('w-up', self.key, ['w', False])
-        self.accept('a', self.key, ['a', True])
-        self.accept('a-up', self.key, ['a', False])
-        self.accept('s', self.key, ['s', True])
-        self.accept('s-up', self.key, ['s', False])
+        self.accept_keyboard()
+        self.accept('console-open', self.ignore_keyboard)
+        self.accept('console-close', self.accept_keyboard)
 
         self.accept('mouse3', self.start_drag)
         self.accept('mouse3-up', self.end_drag)
@@ -44,6 +37,17 @@ class CameraController(DirectObject):
         self.accept('mouse2-up', self.end_zoom)
 
         taskmgr.add(self.move_camera, "Move Camera")
+
+    def accept_keyboard(self):
+        for k in self.keys:
+            self.accept(k, self.key, [k, True])
+            self.accept(k + '-up', self.key, [k, False])
+
+    def ignore_keyboard(self):
+        for k in self.keys:
+            self.ignore(k)
+            self.ignore(k + '-up')
+            self.keys[k] = False
 
     def key(self, key, down):
         self.keys[key] = down

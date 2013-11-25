@@ -3,6 +3,7 @@
 import random
 
 from direct.showbase.ShowBase import ShowBase
+from direct.showbase.DirectObject import DirectObject
 from direct.showbase.PythonUtil import bound
 
 
@@ -16,6 +17,7 @@ import gui
 import geometry
 import block_picker
 import zmap
+import console
 
 #loadPrcFileData("", "want-directtools #t")
 #loadPrcFileData("", "want-tk #t")
@@ -32,9 +34,6 @@ class Dorfdelf(ShowBase):
         self.render.setShaderAuto()
         self.setBackgroundColor(0.1, 0.1, 0.1)
 
-
-        #self.render.setAttrib(LightRampAttrib.makeHdr2())
-        # Disable the camera trackball controls.
         self.disableMouse()
 
         ambientLight = core.AmbientLight('ambientLight')
@@ -73,15 +72,10 @@ class Dorfdelf(ShowBase):
         self.explore_mode = True
         self.current_slice = int(self.world.midpoint.z)
 
-        self.accept('e-repeat', self.change_slice, [-1])
-        self.accept('q-repeat', self.change_slice, [1])
-        self.accept('e', self.change_slice, [-1])
-        self.accept('q', self.change_slice, [1])
-        self.accept('tab', self.toggle_explore)
-
-        self.accept('f1', self.world.save, ['test.world'])
-
+        self.accept_keyboard()
         self.accept('mouse1', self.toggle_block)
+
+        self.accept('console-command', self.console_command)
 
         self.dorfd = (1, 0, 0)
         self.dorf = self.loader.loadModel('media/dorfPH.egg')
@@ -96,6 +90,7 @@ class Dorfdelf(ShowBase):
 
         self.taskMgr.doMethodLater(0.5, self.movedorf, 'dorf')
 
+        self.console = console.Console(self)
         self.picker = block_picker.BlockPicker(self.world, self)
         self.zmap = zmap.ZMap(self.world, self)
 
@@ -103,12 +98,46 @@ class Dorfdelf(ShowBase):
 
         print 'Init done'
 
+    def accept_keyboard(self):
+        self.accept('e-repeat', self.change_slice, [-1])
+        self.accept('q-repeat', self.change_slice, [1])
+        self.accept('e', self.change_slice, [-1])
+        self.accept('q', self.change_slice, [1])
+        self.accept('tab', self.toggle_explore)
+        self.accept('f1', self.world.save, ['test.world'])
+
+        self.accept('enter', self.open_console)
+        self.accept('console-close', self.accept_keyboard)
+
+    def ignore_keyboard(self):
+        self.ignore('e')
+        self.ignore('e-repeat')
+        self.ignore('q-repeat')
+        self.ignore('q')
+        self.ignore('tab')
+        self.ignore('f1')
+        self.ignore('enter')
+
+    def open_console(self):
+        self.console.listen()
+        self.ignore_keyboard()
+
+    def console_command(self, args):
+        cmd = args.pop(0)
+
+        if cmd == 'explore':
+            self.toggle_explore()
+        if cmd == 'slice':
+            n = args[0]
+            self.change_slice(int(n), rel=args[0][0] in '-+')
+
     def toggle_explore(self):
         self.explore_mode = not self.explore_mode
         self.change_slice(0)
 
-    def change_slice(self, n):
-        self.current_slice = bound(self.current_slice + n, 0, self.world.depth - 1)
+    def change_slice(self, n, rel=True):
+        s = self.current_slice + n if rel else n
+        self.current_slice = bound(s, 0, self.world.depth - 1)
         self.messenger.send('slice-changed', [self.current_slice, self.explore_mode])
 
     def toggle_block(self):
