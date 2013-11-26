@@ -1,11 +1,13 @@
 from __future__ import division
 import itertools
 import math
+from profilehooks import profile
 
 import panda3d.core as core
 from direct.showbase.DirectObject import DirectObject
 from direct.task.TaskManagerGlobal import taskMgr
 
+import world
 
 class GeomBuilder(object):
     def __init__(self, name, master):
@@ -13,14 +15,14 @@ class GeomBuilder(object):
         self.master = master
         self.primitive = core.GeomTriangles(core.Geom.UHStatic)
 
-    def add_block(self, x, y, b):
-        if b.hidden:
-            form = b.FORMS['Hidden']
+    def add_block(self, x, y, form, hidden):
+        if hidden:
+            form = world.Block.FORMS['Hidden']
         else:
-            form = b.form
-        for i in form.indices:
+            form = form
+        for prim in form.indices:
             offset = self.master.index_offset(x, y, form)
-            self.primitive.addVertex(i + offset)
+            self.primitive.addVertices(*[i + offset for i in prim])
 
     def build(self):
         geom = core.Geom(self.master.vertexdata)
@@ -91,12 +93,6 @@ class Slice(core.NodePath):
         self.hiddentexture.setWrapU(core.Texture.WMClamp)
         self.hiddentexture.setWrapV(core.Texture.WMClamp)
 
-        blocks = 0
-        for x, y in self.world.columns():
-            b = self.world.get_block(x, y, self.z)
-            if b.substance:
-                blocks += 1
-
         self.updates = set()
         for cx, cy in itertools.product(range(self.world.width // self.chunk_size), range(self.world.height // self.chunk_size)):
             self.build_chunk(cx, cy)
@@ -108,22 +104,22 @@ class Slice(core.NodePath):
         builders = {}
 
         chunk_size = self.chunk_size
-        block_getter = self.world.get_block
+        block_getter = self.world.get_raw
 
         for x, y in itertools.product(range(chunk_size), range(chunk_size)):
-            b = block_getter(cx * chunk_size + x, cy * chunk_size + y, self.z)
-            if not b.substance:
+            form, substance, hidden = block_getter(cx * chunk_size + x, cy * chunk_size + y, self.z)
+            if not substance:
                 continue
 
-            if b.substance not in builders:
-                builders[b.substance] = GeomBuilder('slice-{}-geom-{}'.format(self.z, b.substance), self.master)
+            if substance not in builders:
+                builders[substance] = GeomBuilder('slice-{}-geom-{}'.format(self.z, substance), self.master)
 
-            if b.hidden:
+            if hidden:
                 builder = hbuilder
             else:
-                builder = builders[b.substance]
+                builder = builders[substance]
 
-            builder.add_block(x, y, b)
+            builder.add_block(x, y, form, hidden)
 
         chunk_size = self.chunk_size
         old = self.chunks.get((cx, cy))

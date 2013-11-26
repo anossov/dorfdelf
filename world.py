@@ -46,9 +46,11 @@ def load_forms():
             primitive = geom.getPrimitive(prim).decompose()
 
             for p in range(primitive.getNumPrimitives()):
+                pvs = []
                 for i in range(primitive.getPrimitiveStart(p), primitive.getPrimitiveEnd(p)):
                     vi = primitive.getVertex(i)
-                    indices.append(vi)
+                    pvs.append(vi)
+                indices.append(pvs)
 
         yield Form(name, vertices, indices)
 
@@ -78,7 +80,7 @@ class Substance(object):
 
 
 class Block(object):
-    __slots__ = ('form', 'substance', 'hidden', 'pos', 'world')
+    __slots__ = ('form', 'substance', 'hidden', 'x', 'y', 'z', 'world')
 
     FORMS = None
 
@@ -86,7 +88,7 @@ class Block(object):
         self.form = form
         self.substance = substance
         self.hidden = hidden
-        self.pos = pos
+        self.x, self.y, self.z = pos
         self.world = world
 
     @property
@@ -107,27 +109,27 @@ class Block(object):
 
     @property
     def up(self):
-        return self.world.get_block(*(self.pos + (0, 0, 1)))
+        return self.world.get_block(self.x, self.y, self.z + 1)
 
     @property
     def down(self):
-        return self.world.get_block(*(self.pos + (0, 0, -1)))
+        return self.world.get_block(self.x, self.y, self.z - 1)
 
     @property
     def right(self):
-        return self.world.get_block(*(self.pos + (1, 0, 0)))
+        return self.world.get_block(self.x + 1, self.y, self.z)
 
     @property
     def left(self):
-        return self.world.get_block(*(self.pos + (-1, 0, 0)))
+        return self.world.get_block(self.x - 1, self.y, self.z)
 
     @property
     def front(self):
-        return self.world.get_block(*(self.pos + (0, 1, 0)))
+        return self.world.get_block(self.x, self.y + 1, self.z)
 
     @property
     def back(self):
-        return self.world.get_block(*(self.pos + (0, -1, 0)))
+        return self.world.get_block(self.x, self.y - 1, self.z)
 
     def hides(self, direction):
         return self.form.hides(direction)
@@ -182,11 +184,11 @@ class World(object):
 
     def __contains__(self, item):
         x, y, z = item
-        if x < 0 or y < 0 or z < 0:
-            return False
-        if x >= self.width or y >= self.height or z >= self.depth:
-            return False
-        return True
+        return (
+            (0 <= x < self.width) and
+            (0 <= y < self.height) and
+            (0 <= z < self.depth)
+        )
 
     def _block_index(self, x, y, z):
         return int(x) * self.height * self.depth + int(y) * self.depth + int(z)
@@ -195,12 +197,12 @@ class World(object):
         return self.blocks[self._block_index(x, y, z)]
 
     def get_block(self, x, y, z):
-        p = core.Point3(x, y, z)
+        p = (x, y, z)
         if p not in self:
             return NullBlock(None, None, False, p, self)
 
-        f, s, h = self.blocks[self._block_index(x, y, z)]
-        return Block(f, s, h, p, self)
+        b = self.blocks[self._block_index(x, y, z)]
+        return Block(b[0], b[1], b[2], p, self)
 
     def set_block(self, x, y, z, form, substance, hidden, update_hidden=True):
         if (x, y, z) not in self:
@@ -221,9 +223,11 @@ class World(object):
     def update_hidden(self, x, y, z):
         b = self.get_block(x, y, z)
         if all(f.hides(d) for d, (f, s, h) in self.neighborhood(x, y, z)):
-            self.set_block(x, y, z, b.form, b.substance, True, False)
+            b.hidden = True
         else:
-            self.set_block(x, y, z, b.form, b.substance, False, False)
+            b.hidden = False
+
+        self.set_block(x, y, z, b.form, b.substance, b.hidden, False)
 
     def grid(self):
         return itertools.product(range(self.width), range(self.height), range(self.depth))
