@@ -50,7 +50,7 @@ class Dorfdelf(ShowBase):
         plnp = self.render.attachNewNode(plight)
         self.render.setLight(plnp)
 
-        self.world = world.World(64, 64, 100)
+        self.world = world.World(128, 128, 80)
         self.world.generate()
         #self.world = world.World.load('test.world')
 
@@ -86,7 +86,6 @@ class Dorfdelf(ShowBase):
 
         self.change_slice(0)
 
-        self.render.analyze()
         print 'Init done'
 
     def add_dorf(self):
@@ -98,7 +97,7 @@ class Dorfdelf(ShowBase):
                 d.node.reparentTo(self.render)
                 self.dorfs.append(d)
                 if not b.is_block:
-                    b.update(self.world.forms['Block'], b.substance, False, (32, 32, z))
+                    self.world.set_block(x, y, z, self.world.forms['Block'], b.substance, False)
                 break
 
     def accept_keyboard(self):
@@ -141,6 +140,10 @@ class Dorfdelf(ShowBase):
             self.toggleTexture()
         if cmd == 'dorf':
             self.add_dorf()
+        if cmd == 'analyze':
+            self.render.analyze()
+        if cmd == 'ls':
+            self.render.ls()
 
     def toggle_explore(self):
         self.explore_mode = not self.explore_mode
@@ -155,15 +158,16 @@ class Dorfdelf(ShowBase):
         if not self.picker.picked:
             return
 
-        b = self.world.get_block(*self.picker.picked)
+        x, y, z = self.picker.picked
+        b = self.world.get_block(x, y, z)
 
         if b.is_ramp:
-            b.update(self.world.forms['Void'], 0, False, self.picker.picked)
+            self.world.set_block(x, y, z, self.world.forms['Void'], 1, False)
         elif b.is_void:
-            b.update(self.world.forms['Block'], 1, False, self.picker.picked)
+            self.world.set_block(x, y, z, self.world.forms['Block'], 1, False)
         elif b.is_block:
-            if not self.world.make_ramp(*self.picker.picked):
-                b.update(self.world.forms['Void'], 0, False, self.picker.picked)
+            if not self.world.make_ramp(x, y, z):
+                self.world.set_block(x, y, z, self.world.forms['Void'], 0, False, self.picker.picked)
 
 
 app = Dorfdelf()

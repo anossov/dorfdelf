@@ -33,11 +33,12 @@ class Dorf(DirectObject):
         cwp = int(c.x), int(c.y), int(c.z)
         wp = int(t.x), int(t.y), int(t.z)
         cb = self.world.get_block(*cwp)
-        b = self.world.get_block(*wp)
+        wx, wy, wz = wp
+        b = self.world.get_block(wx, wy, wz)
         if not b.is_void:
             if cb.is_ramp:
                 self.node.setPos(self.node, (0, 0, -0.5))
-            b.update(self.world.forms['Void'], 0, False, wp)
+            self.world.set_block(wx, wy, wz, self.world.forms['Void'], 0, False)
         else:
             if b.down.is_ramp:
                 self.node.setPos(self.node, (0, 0, -0.5))
