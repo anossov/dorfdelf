@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 
+import itertools
 import random
 
 from direct.showbase.ShowBase import ShowBase
@@ -19,6 +20,7 @@ import block_picker
 import zmap
 import console
 import dorf
+import tools
 
 #loadPrcFileData("", "want-directtools #t")
 #loadPrcFileData("", "want-tk #t")
@@ -79,6 +81,12 @@ class Dorfdelf(ShowBase):
         self.accept('console-command', self.console_command)
 
         self.dorfs = []
+        self.tool = lambda w, x, y, z: None
+        self.toolargs = ()
+        self.tools = {
+            'bomb': tools.bomb,
+            'block': tools.block,
+        }
 
         self.console = console.Console(self)
         self.picker = block_picker.BlockPicker(self.world, self)
@@ -151,6 +159,11 @@ class Dorfdelf(ShowBase):
             self.world.generate()
             self.world_geometry.update_all()
 
+        if cmd == 'tool':
+            t = args.pop(0)
+            self.tool = self.tools[t]
+            self.toolargs = args
+
     def toggle_explore(self):
         self.explore_mode = not self.explore_mode
         self.change_slice(0)
@@ -165,15 +178,11 @@ class Dorfdelf(ShowBase):
             return
 
         x, y, z = self.picker.picked
-        b = self.world.get_block(x, y, z)
 
-        if b.is_ramp:
-            self.world.set_block(x, y, z, self.world.forms['Void'], 1, False)
-        elif b.is_void:
-            self.world.set_block(x, y, z, self.world.forms['Block'], 1, False)
-        elif b.is_block:
-            if not self.world.make_ramp(x, y, z):
-                self.world.set_block(x, y, z, self.world.forms['Void'], 0, False, self.picker.picked)
+        try:
+            self.tool(self.world, x, y, z, *self.toolargs)
+        except Exception as e:
+            print e
 
 
 app = Dorfdelf()

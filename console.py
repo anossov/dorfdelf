@@ -1,3 +1,4 @@
+from itertools import chain
 from direct.showbase.DirectObject import DirectObject
 
 
@@ -11,8 +12,16 @@ class Console(DirectObject):
         charmap = {
             'space': ' ',
             'shift-=': '+',
-            }
-        self.characters.append(charmap.get(char, char))
+        }
+        mapped = charmap.get(char)
+        if mapped is None:
+            if char.startswith('shift-'):
+                _, c = char.split('-', 1)
+                mapped = c.upper()
+            else:
+                mapped = char
+
+        self.characters.append(mapped)
         self.app.messenger.send('console-update', [self.characters])
 
     def del_char(self):
@@ -37,7 +46,8 @@ class Console(DirectObject):
         self.accept('enter', self.run_command)
         self.accept('backspace', self.del_char)
         self.accept('backspace-repeat', self.del_char)
-        for c in tuple('abcdefghijklmnopqrstuvwxyz01234567890-+') + ('space', 'shift-='):
+        chars = 'abcdefghijklmnopqrstuvwxyz01234567890-+='
+        for c in chain(chars, ['shift-' + char for char in chars], ['space']):
             self.accept(c, self.add_char, [c])
 
     def close(self):
