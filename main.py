@@ -50,7 +50,7 @@ class Dorfdelf(ShowBase):
         plnp = self.render.attachNewNode(plight)
         self.render.setLight(plnp)
 
-        self.world = world.World(128, 128, 80)
+        self.world = world.World(64, 64, 80)
         self.world.generate()
         #self.world = world.World.load('test.world')
 

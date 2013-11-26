@@ -2,6 +2,7 @@ import itertools
 import random
 import json
 import sys
+import profilehooks
 
 import panda3d.core as core
 from direct.showbase.MessengerGlobal import messenger
@@ -58,6 +59,13 @@ class Form(object):
         self.vertices = vertices
         self.indices = indices
         self.num_vertices = len(vertices)
+
+    def hides(self, direction):
+        if self.name == 'Block':
+            return True
+        if self.name.startswith('Ramp') and direction == (0, 0, 1):
+            return True
+        return False
 
 
 class Substance(object):
@@ -122,11 +130,7 @@ class Block(object):
         return self.world.get_block(*(self.pos + (0, -1, 0)))
 
     def hides(self, direction):
-        if self.is_block:
-            return True
-        if self.is_ramp and direction == (0, 0, 1):
-            return True
-        return False
+        return self.form.hides(direction)
 
     def __str__(self):
         return '{}/{}/{}'.format(self.form.name, self.substance, self.hidden)
@@ -187,6 +191,9 @@ class World(object):
     def _block_index(self, x, y, z):
         return int(x) * self.height * self.depth + int(y) * self.depth + int(z)
 
+    def get_raw(self, x, y, z):
+        return self.blocks[self._block_index(x, y, z)]
+
     def get_block(self, x, y, z):
         p = core.Point3(x, y, z)
         if p not in self:
@@ -213,13 +220,16 @@ class World(object):
 
     def update_hidden(self, x, y, z):
         b = self.get_block(x, y, z)
-        if all(getattr(b, k).hides(d) for k, d in DIRECTIONS.items()):
+        if all(f.hides(d) for d, (f, s, h) in self.neighborhood(x, y, z)):
             self.set_block(x, y, z, b.form, b.substance, True, False)
         else:
             self.set_block(x, y, z, b.form, b.substance, False, False)
 
+    def grid(self):
+        return itertools.product(range(self.width), range(self.height), range(self.depth))
+
     def all(self):
-        for x, y, z in itertools.product(range(self.width), range(self.height), range(self.depth)):
+        for x, y, z in self.grid():
             b = self.get_block(x, y, z)
             yield x, y, z, b
 
@@ -234,7 +244,13 @@ class World(object):
     def zlevels(self):
         return range(self.depth)
 
-    def make_ramp(self, x, y, z):
+    def neighborhood(self, x, y, z):
+        for dx, dy, dz in DIRECTIONS.values():
+            rx, ry, rz = x + dx, y + dy, z + dz
+            if (rx, ry, rz) in self:
+                yield (dx, dy, dz), self.get_raw(rx, ry, rz)
+
+    def make_ramp(self, x, y, z, update_hidden=True):
         b = self.get_block(x, y, z)
 
         if b.left.is_block and b.front.is_block:
@@ -256,7 +272,7 @@ class World(object):
         else:
             return False
 
-        self.set_block(x, y, z, self.forms[f], s, False)
+        self.set_block(x, y, z, self.forms[f], s, False, update_hidden)
         return True
 
     def generate(self):
@@ -272,13 +288,17 @@ class World(object):
                 else:
                     self.blocks[i] = (self.forms['Block'], Substance.STONE, False)
 
-        for x, y, z, b in self.all():
-            if b.form.name == 'Void':
-                if b.down.is_block:
-                    self.make_ramp(x, y, z)
+        for x, y, z in self.grid():
+            if z > 0:
+                f = self.get_raw(x, y, z)[0]
+                fd = self.get_raw(x, y, z - 1)[0]
+                if f.name == 'Void':
+                    if fd.name == 'Block':
+                        self.make_ramp(x, y, z, False)
 
-        for x, y, z, b in self.all():
-            if b.form.name == 'Block':
+        for x, y, z in self.grid():
+            f, s, h = self.get_raw(x, y, z)
+            if f.name == 'Block':
                 self.update_hidden(x, y, z)
                 continue
 
