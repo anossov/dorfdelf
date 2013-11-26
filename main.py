@@ -44,8 +44,8 @@ class Dorfdelf(ShowBase):
 
         plight = core.DirectionalLight('plight')
         plight.setColor(Vec4(1.0, 1.0, 1.0, 1))
-        plight.getLens().setNearFar(20, 1000)
-        plight.getLens().setFilmSize(320, 320)
+        plight.getLens().setNearFar(20, 500)
+        plight.getLens().setFilmSize(120, 120)
 #        plight.setShadowCaster(True, 4096, 4096)
         plnp = self.render.attachNewNode(plight)
         self.render.setLight(plnp)
@@ -89,12 +89,11 @@ class Dorfdelf(ShowBase):
         print 'Init done'
 
     def add_dorf(self):
-        x, y = random.randint(0, self.world.width), random.randint(0, self.world.height)
+        x, y = random.choice(list(self.world.columns()))
         for z in reversed(range(self.world.depth)):
             b = self.world.get_block(x, y, z)
             if not b.is_void:
                 d = dorf.Dorf(Point3(x, y, z + 1), self.world)
-                d.node.reparentTo(self.render)
                 self.dorfs.append(d)
                 if not b.is_block:
                     self.world.set_block(x, y, z, self.world.forms['Block'], b.substance, False)
@@ -139,11 +138,18 @@ class Dorfdelf(ShowBase):
         if cmd == 'texture':
             self.toggleTexture()
         if cmd == 'dorf':
-            self.add_dorf()
+            n = 1
+            if args:
+                n = int(args[0])
+            for _ in range(n):
+                self.add_dorf()
         if cmd == 'analyze':
             self.render.analyze()
         if cmd == 'ls':
             self.render.ls()
+        if cmd == 'generate':
+            self.world.generate()
+            self.world_geometry.update_all()
 
     def toggle_explore(self):
         self.explore_mode = not self.explore_mode

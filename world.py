@@ -177,10 +177,7 @@ class World(object):
         self.size = core.Point3(self.width, self.height, self.depth)
         self.midpoint = core.Point3(self.width // 2, self.height // 2, self.depth // 2)
 
-        self.blocks = [
-            (self.forms['Void'], Substance.AIR, False)
-            for x, y, z in itertools.product(range(self.width), range(self.height), range(self.depth))
-        ]
+        self.blocks = [None for _ in self.grid()]
 
     def __contains__(self, item):
         x, y, z = item
@@ -285,9 +282,11 @@ class World(object):
             h = fbm.noise(x, y) * 20 + self.midpoint.z
             h2 = fbm.noise(x, y) * 7 + self.midpoint.z
 
-            for z in range(int(max(h, h2))):
+            for z in range(self.depth):
                 i = self._block_index(x, y, z)
-                if h < z < h2:
+                if z > max(h, h2):
+                    self.blocks[i] = (self.forms['Void'], Substance.AIR, False)
+                elif h < z < h2:
                     self.blocks[i] = (self.forms['Block'], Substance.DIRT, False)
                 else:
                     self.blocks[i] = (self.forms['Block'], Substance.STONE, False)

@@ -2,47 +2,60 @@ import random
 
 from direct.showbase.DirectObject import DirectObject
 from direct.task.TaskManagerGlobal import taskMgr
+from direct.showbase.MessengerGlobal import messenger
 
 
 class Dorf(DirectObject):
     def __init__(self, pos, world):
-        self.worldpos = pos
         self.world = world
         self.node = loader.loadModel('media/dorfPH.egg')
 
-        self.node.setPos(self.worldpos)
-        self.dir = (1, 0, 0)
+        self.x = int(pos.x)
+        self.y = int(pos.y)
+        self.z = 0
+        self.next = None
+        self.dir = (1, 0)
 
         taskMgr.doMethodLater(0.5, self.move, 'Move dorf')
 
+        self.set_z(int(pos.z))
+        self.node.setPos(pos.x, pos.y, 0)
+
+    def set_z(self, z):
+        self.z = z
+        messenger.send('entity-z-change', [self])
+
     def move(self, task):
-        c = self.node.getPos()
+        if self.next:
+            self.x, self.y, z = self.next
+            self.node.setPos(self.x, self.y, 0)
+            if self.z != z:
+                self.set_z(z)
 
-        if random.random() > 0.4 and c + self.dir in self.world:
-            d = self.dir
+        b = self.world.get_block(self.x, self.y, self.z)
+        if b.is_ramp:
+            self.node.setPos(self.x, self.y, 0.5)
         else:
-            ds = [i for i in [(1, 0, 0), (0, 1, 0), (0, -1, 0), (-1, 0, 0)] if c + i in self.world]
-            d = random.choice(ds)
-            self.dir = d
+            self.node.setPos(self.x, self.y, 0.0)
 
-        t = c + d
+        if b.is_block:
+            self.world.set_block(self.x, self.y, self.z, self.world.forms['Void'], 0, False)
 
-        self.node.lookAt(t)
-        self.node.setPos(t)
-
-        cwp = int(c.x), int(c.y), int(c.z)
-        wp = int(t.x), int(t.y), int(t.z)
-        cb = self.world.get_block(*cwp)
-        wx, wy, wz = wp
-        b = self.world.get_block(wx, wy, wz)
-        if not b.is_void:
-            if cb.is_ramp:
-                self.node.setPos(self.node, (0, 0, -0.5))
-            self.world.set_block(wx, wy, wz, self.world.forms['Void'], 0, False)
-        else:
-            if b.down.is_ramp:
-                self.node.setPos(self.node, (0, 0, -0.5))
-            if b.down.is_void:
-                self.node.setPos(self.node, (0, 0, -1.0))
+        self.set_next()
+        self.node.lookAt(self.next[0], self.next[1], 0)
 
         return task.again
+
+    def set_next(self):
+        x, y, z = self.x + self.dir[0], self.y + self.dir[1], self.z
+        if (x, y, z) not in self.world or random.random() < 0.4:
+            ds = [((dx, dy), (self.x + dx, self.y + dy, self.z)) for dx, dy in [(1, 0), (0, 1), (0, -1), (-1, 0)]]
+            self.dir, np = random.choice([(d, n) for d, n in ds if n in self.world])
+            x, y, z = np
+
+        b = self.world.get_block(x, y, z)
+
+        if b.is_void and not b.down.is_block:
+            z -= 1
+
+        self.next = (x, y, z)

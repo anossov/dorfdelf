@@ -9,6 +9,7 @@ from direct.task.TaskManagerGlobal import taskMgr
 
 import world
 
+
 class GeomBuilder(object):
     def __init__(self, name, master):
         self.name = name
@@ -93,11 +94,21 @@ class Slice(core.NodePath):
         self.hiddentexture.setWrapU(core.Texture.WMClamp)
         self.hiddentexture.setWrapV(core.Texture.WMClamp)
 
+        self.show_stale_chunks = False
+
         self.updates = set()
+        self.update_all()
+
+        self.task = taskMgr.add(self.perform_updates, 'Slice update')
+
+    def update_all(self):
         for cx, cy in itertools.product(range(self.world.width // self.chunk_size), range(self.world.height // self.chunk_size)):
             self.build_chunk(cx, cy)
 
-        taskMgr.add(self.perform_updates, 'Slice update')
+    def destroy(self):
+        self.ignoreAll()
+        self.detachNode()
+        taskMgr.remove(self.task)
 
     def build_chunk(self, cx, cy):
         hbuilder = GeomBuilder('slice-{}-hidden'.format(self.z), self.master)
@@ -121,10 +132,9 @@ class Slice(core.NodePath):
 
             builder.add_block(x, y, form, hidden)
 
-        chunk_size = self.chunk_size
+        hide = True
         old = self.chunks.get((cx, cy))
         oldh = self.hidden_chunks.get((cx, cy))
-        hide = True
 
         if old:
             for n in old:
@@ -155,6 +165,16 @@ class Slice(core.NodePath):
         cx, cy = x // self.chunk_size, y // self.chunk_size
         self.updates.add((cx, cy))
 
+        if self.show_stale_chunks:
+            old = self.chunks.get((cx, cy))
+            oldh = self.hidden_chunks.get((cx, cy))
+
+            if old:
+                for n in old:
+                    n.setColorScale(1.0, 0.5, 0.5, 1.0)
+            if oldh:
+                oldh.setColorScale(1.0, 0.5, 0.5, 1.0)
+
     def hide_hidden(self):
         for c in self.hidden_chunks.values():
             c.hide()
@@ -164,11 +184,14 @@ class Slice(core.NodePath):
             c.show()
 
     def perform_updates(self, task):
+        if self.isHidden():
+            return task.cont
+
         if self.updates:
             cx, cy = self.updates.pop()
             self.build_chunk(cx, cy)
 
-        return task.cont
+        return task.again
 
 
 class WorldGeometry(DirectObject):
@@ -177,7 +200,6 @@ class WorldGeometry(DirectObject):
         self.node = core.NodePath('world')
 
         self.slices = []
-        self.hidden_chunks = [[] for _ in range(self.world.depth)]
 
         for z in range(self.world.depth):
             slice = Slice(self.world, z)
@@ -186,6 +208,13 @@ class WorldGeometry(DirectObject):
 
         self.accept('slice-changed', self.slice_changed)
         self.accept('block-update', self.block_update)
+        self.accept('entity-z-change', self.reparent_entity)
+
+    def destroy(self):
+        for s in self.slices:
+            s.destroy()
+        self.ignoreAll()
+        self.node.detachNode()
 
     def slice_changed(self, current_slice, explore):
         for i, s in enumerate(self.slices):
@@ -212,3 +241,10 @@ class WorldGeometry(DirectObject):
     def block_update(self, pos):
         x, y, z = pos
         self.slices[z].update(x, y)
+
+    def update_all(self):
+        for s in self.slices:
+            s.update_all()
+
+    def reparent_entity(self, ent):
+        ent.node.reparentTo(self.slices[ent.z])
