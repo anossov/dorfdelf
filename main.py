@@ -35,12 +35,11 @@ class Dorfdelf(ShowBase):
 
         self.render.setAntialias(core.AntialiasAttrib.MAuto)
        # self.render.setShaderAuto()
-        self.setBackgroundColor(0.1, 0.1, 0.1)
+        self.setBackgroundColor(0.5, 0.5, 0.5)
 
         self.disableMouse()
 
         shader = core.Shader.load(core.Shader.SLGLSL, 'media/vertex.glsl', 'media/fragment.glsl')
-        self.render.setShader(shader)
 
         ambientLight = core.AmbientLight('ambientLight')
         ambientLight.setColor(Vec4(.2, 0.2, 0.2, 1))
@@ -54,16 +53,17 @@ class Dorfdelf(ShowBase):
 #       plight.setShadowCaster(True, 4096, 4096)
         plnp = self.render.attachNewNode(plight)
         self.render.setLight(plnp)
-        self.render.setShaderInput('light', plnp)
 
-        self.world = world.World(64, 64, 80)
+        self.world = world.World(128, 128, 80)
         self.world.generate()
         #self.world = world.World.load('test.world')
 
         self.world_geometry = geometry.WorldGeometry(self.world)
+        self.world_geometry.node.setShader(shader)
 
         plnp.setPos(self.world.width / 2 - 20, self.world.height / 2 + 30, 50)
         plnp.lookAt(self.world.width / 2, self.world.height / 2, 0)
+        self.world_geometry.node.setShaderInput('light', plnp)
 
         self.camLens.setFocalLength(1)
         self.camera.setPos(0, 0, 80)

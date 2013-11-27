@@ -15,7 +15,7 @@ out Data {
 void main()
 {
     DataOut.normal = normalize(p3d_NormalMatrix * p3d_Normal);
-    DataOut.eye = -(p3d_ModelViewMatrix * p3d_Vertex);
+//    DataOut.eye = -(p3d_ModelViewMatrix * p3d_Vertex);
     DataOut.texcoord = gl_MultiTexCoord0;
     gl_Position = p3d_ModelViewProjectionMatrix * p3d_Vertex;
 }
