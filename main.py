@@ -34,10 +34,13 @@ class Dorfdelf(ShowBase):
         self.win.requestProperties(wp)
 
         self.render.setAntialias(core.AntialiasAttrib.MAuto)
-        self.render.setShaderAuto()
+        #self.render.setShaderAuto()
         self.setBackgroundColor(0.1, 0.1, 0.1)
 
         self.disableMouse()
+
+        #shader = core.Shader.load(core.Shader.SLGLSL, 'media/vertex.glsl', 'media/fragment.glsl')
+        #self.render.setShader(shader)
 
         ambientLight = core.AmbientLight('ambientLight')
         ambientLight.setColor(Vec4(.2, 0.2, 0.2, 1))
@@ -48,11 +51,12 @@ class Dorfdelf(ShowBase):
         plight.setColor(Vec4(1.0, 1.0, 1.0, 1))
         plight.getLens().setNearFar(20, 500)
         plight.getLens().setFilmSize(120, 120)
-#        plight.setShadowCaster(True, 4096, 4096)
+#       plight.setShadowCaster(True, 4096, 4096)
         plnp = self.render.attachNewNode(plight)
         self.render.setLight(plnp)
 
-        self.world = world.World(64, 64, 80)
+
+        self.world = world.World(32, 32, 80)
         self.world.generate()
         #self.world = world.World.load('test.world')
 
@@ -96,6 +100,17 @@ class Dorfdelf(ShowBase):
 
         print 'Init done'
 
+    def add_light(self):
+        x, y = random.choice(list(self.world.columns()))
+        for z in reversed(range(self.world.depth)):
+            b = self.world.get_block(x, y, z)
+            if not b.is_void:
+                p = core.PointLight('pl-{}-{}-{}'.format(x, y, z))
+                p.setAttenuation(Point3(0, 0, 0.4))
+                pn = self.render.attachNewNode(p)
+                pn.setPos(x, y, z + 3)
+                self.render.setLight(pn)
+
     def add_dorf(self):
         x, y = random.choice(list(self.world.columns()))
         for z in reversed(range(self.world.depth)):
@@ -132,6 +147,7 @@ class Dorfdelf(ShowBase):
         self.ignore_keyboard()
 
     def console_command(self, args):
+        args = list(args)
         cmd = args.pop(0)
 
         if cmd == 'explore':
@@ -159,10 +175,13 @@ class Dorfdelf(ShowBase):
             self.world.generate()
             self.world_geometry.update_all()
 
-        if cmd == 'tool':
+        if cmd == 't':
             t = args.pop(0)
             self.tool = self.tools[t]
             self.toolargs = args
+
+        if cmd == 'light':
+            self.add_light()
 
     def toggle_explore(self):
         self.explore_mode = not self.explore_mode

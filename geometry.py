@@ -6,6 +6,7 @@ from profilehooks import profile
 import panda3d.core as core
 from direct.showbase.DirectObject import DirectObject
 from direct.task.TaskManagerGlobal import taskMgr
+from direct.showbase.MessengerGlobal import messenger
 
 import world
 
@@ -101,12 +102,20 @@ class Slice(core.NodePath):
 
         self.task = taskMgr.add(self.perform_updates, 'Slice update')
 
+        messenger.accept('console-command', self, self.command)
+
+    def command(self, args):
+        args = list(args)
+        cmd = args.pop(0)
+        if cmd == 'show-stale-chunks':
+            self.show_stale_chunks = not self.show_stale_chunks
+
     def update_all(self):
         for cx, cy in itertools.product(range(self.world.width // self.chunk_size), range(self.world.height // self.chunk_size)):
             self.build_chunk(cx, cy)
 
     def destroy(self):
-        self.ignoreAll()
+        messenger.ignoreAll(self)
         self.detachNode()
         taskMgr.remove(self.task)
 
