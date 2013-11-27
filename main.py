@@ -34,13 +34,13 @@ class Dorfdelf(ShowBase):
         self.win.requestProperties(wp)
 
         self.render.setAntialias(core.AntialiasAttrib.MAuto)
-        #self.render.setShaderAuto()
+       # self.render.setShaderAuto()
         self.setBackgroundColor(0.1, 0.1, 0.1)
 
         self.disableMouse()
 
-        #shader = core.Shader.load(core.Shader.SLGLSL, 'media/vertex.glsl', 'media/fragment.glsl')
-        #self.render.setShader(shader)
+        shader = core.Shader.load(core.Shader.SLGLSL, 'media/vertex.glsl', 'media/fragment.glsl')
+        self.render.setShader(shader)
 
         ambientLight = core.AmbientLight('ambientLight')
         ambientLight.setColor(Vec4(.2, 0.2, 0.2, 1))
@@ -54,9 +54,9 @@ class Dorfdelf(ShowBase):
 #       plight.setShadowCaster(True, 4096, 4096)
         plnp = self.render.attachNewNode(plight)
         self.render.setLight(plnp)
+        self.render.setShaderInput('light', plnp)
 
-
-        self.world = world.World(32, 32, 80)
+        self.world = world.World(64, 64, 80)
         self.world.generate()
         #self.world = world.World.load('test.world')
 
