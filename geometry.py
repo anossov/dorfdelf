@@ -207,6 +207,9 @@ class WorldGeometry(DirectObject):
     def __init__(self, world):
         self.world = world
         self.node = core.NodePath('world')
+        shader = core.Shader.load(core.Shader.SLGLSL, 'media/vertex.glsl', 'media/fragment.glsl')
+        self.node.setShader(shader)
+        self.node.setShaderInput('color_scale', 1.0)
 
         self.slices = []
 
@@ -230,7 +233,7 @@ class WorldGeometry(DirectObject):
             d = abs(current_slice - i)
             if explore:
                 s.show()
-                s.clearColorScale()
+                s.setShaderInput('color_scale', 1.0)
                 s.hide_hidden()
             else:
                 if d == 0:
@@ -242,10 +245,10 @@ class WorldGeometry(DirectObject):
                 else:
                     s.show()
                     if d:
-                        v = 0.5 - d / 15.0
-                        s.setColorScale(v, v, v, 1)
+                        v = 0.9 - d / 8.0
+                        s.setShaderInput('color_scale', v)
                     else:
-                        s.clearColorScale()
+                        s.setShaderInput('color_scale', 1.0)
 
     def block_update(self, pos):
         x, y, z = pos

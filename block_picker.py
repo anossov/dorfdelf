@@ -1,7 +1,7 @@
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.PythonUtil import bound
 
-from panda3d.core import Point3, Vec3, Plane
+from panda3d.core import Point3, Vec3, Vec4, Plane, Shader
 
 
 class BlockPicker(DirectObject):
@@ -13,6 +13,11 @@ class BlockPicker(DirectObject):
         self.app = app
         self.picker = app.loader.loadModel('media/picked.egg')
         self.picker.reparentTo(app.render)
+
+        shader = Shader.load(Shader.SLGLSL, 'media/vertex.glsl', 'media/flat.glsl')
+        self.picker.setShader(shader)
+        self.picker.setShaderInput('color', Vec4(0.3, 0.3, 1.0, 0.5))
+
         self.picking_planes = [Plane(Vec3(0, 0, 1), Point3(0, 0, z + 1)) for z in self.world.zlevels()]
         self.picked = None
         self.mouse = app.mouseWatcherNode
