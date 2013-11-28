@@ -11,10 +11,10 @@ class BlockPicker(DirectObject):
     def __init__(self, world, app):
         self.world = world
         self.app = app
-        self.picker = app.loader.loadModel('media/picked.egg')
+        self.picker = app.loader.loadModel('media/models/picked.egg')
         self.picker.reparentTo(app.render)
 
-        shader = Shader.load(Shader.SLGLSL, 'media/vertex.glsl', 'media/flat.glsl')
+        shader = Shader.load(Shader.SLGLSL, 'media/shaders/vertex.glsl', 'media/shaders/flat.glsl')
         self.picker.setShader(shader)
         self.picker.setShaderInput('color', Vec4(0.3, 0.3, 1.0, 0.5))
 

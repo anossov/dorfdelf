@@ -83,13 +83,13 @@ class Slice(core.NodePath):
         self.setPos(0, 0, z)
 
         self.substances = [None] + [
-            loader.loadTexture('media/{}.png'.format(name),
+            loader.loadTexture('media/textures/{}.png'.format(name),
                                anisotropicDegree=16,
                                minfilter=core.Texture.FTLinearMipmapLinear)
             for name in ['dirt', 'stone']
         ]
 
-        self.hiddentexture = loader.loadTexture('media/hidden.png',
+        self.hiddentexture = loader.loadTexture('media/textures/hidden.png',
                                                 anisotropicDegree=16,
                                                 minfilter=core.Texture.FTLinearMipmapLinear)
         self.hiddentexture.setWrapU(core.Texture.WMClamp)
@@ -98,7 +98,6 @@ class Slice(core.NodePath):
         self.show_stale_chunks = False
 
         self.updates = set()
-        self.update_all()
 
         self.task = taskMgr.add(self.perform_updates, 'Slice update')
 
@@ -113,6 +112,10 @@ class Slice(core.NodePath):
     def update_all(self):
         for cx, cy in itertools.product(range(self.world.width // self.chunk_size), range(self.world.height // self.chunk_size)):
             self.build_chunk(cx, cy)
+
+    def update_if_empty(self):
+        if not self.hidden_chunks:
+            self.update_all()
 
     def destroy(self):
         messenger.ignoreAll(self)
@@ -207,7 +210,7 @@ class WorldGeometry(DirectObject):
     def __init__(self, world):
         self.world = world
         self.node = core.NodePath('world')
-        shader = core.Shader.load(core.Shader.SLGLSL, 'media/vertex.glsl', 'media/fragment.glsl')
+        shader = core.Shader.load(core.Shader.SLGLSL, 'media/shaders/vertex.glsl', 'media/shaders/fragment.glsl')
         self.node.setShader(shader)
         self.node.setShaderInput('color_scale', 1.0)
 
@@ -218,9 +221,16 @@ class WorldGeometry(DirectObject):
             slice.reparentTo(self.node)
             self.slices.append(slice)
 
+            for x, y in self.world.columns():
+                f, s, h = self.world.get_raw(x, y, z)
+                if s and not h:
+                    slice.update_all()
+                    break
+
         self.accept('slice-changed', self.slice_changed)
         self.accept('block-update', self.block_update)
         self.accept('entity-z-change', self.reparent_entity)
+        self.accept('designation-add', self.designation)
 
     def destroy(self):
         for s in self.slices:
@@ -243,6 +253,7 @@ class WorldGeometry(DirectObject):
                 if i > current_slice or d > 5:
                     s.hide()
                 else:
+                    s.update_if_empty()
                     s.show()
                     if d:
                         v = 0.9 - d / 8.0
@@ -260,3 +271,7 @@ class WorldGeometry(DirectObject):
 
     def reparent_entity(self, ent):
         ent.node.reparentTo(self.slices[ent.z])
+
+    def designation(self, x, y, z, n):
+        n.setPos(x, y, 0)
+        n.reparentTo(self.slices[z])

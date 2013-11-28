@@ -15,6 +15,6 @@ void main()
 {
     DataOut.normal = normalize(p3d_NormalMatrix * p3d_Normal);
     DataOut.normal = normalize(p3d_Normal);
-    DataOut.texcoord = gl_MultiTexCoord0;
+    DataOut.texcoord = gl_MultiTexCoord0.st;
     gl_Position = p3d_ModelViewProjectionMatrix * p3d_Vertex;
 }

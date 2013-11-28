@@ -19,7 +19,7 @@ DIRECTIONS = {
 
 
 def load_forms():
-    models = loader.loadModel('media/forms.egg')
+    models = loader.loadModel('media/models/forms.egg')
 
     yield Form('Void', [], [])
 
@@ -287,9 +287,9 @@ class World(object):
                 if z > max(h, h2):
                     self.blocks[i] = (self.forms['Void'], Substance.AIR, False)
                 elif h < z < h2:
-                    self.blocks[i] = (self.forms['Block'], Substance.DIRT, False)
+                    self.blocks[i] = (self.forms['Block'], Substance.DIRT, True)
                 else:
-                    self.blocks[i] = (self.forms['Block'], Substance.STONE, False)
+                    self.blocks[i] = (self.forms['Block'], Substance.STONE, True)
 
         for x, y, z in self.grid():
             if z > 0:

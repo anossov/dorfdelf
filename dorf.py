@@ -15,7 +15,7 @@ class Dorf(DirectObject):
     def __init__(self, pos, world):
         self.id = next(Dorf.idgen)
         self.world = world
-        self.node = loader.loadModel('media/dorfPH.egg')
+        self.node = loader.loadModel('media/shaders/dorfPH.egg')
         self.text = core.TextNode('dorf')
         self.text.setText('Dorf {}'.format(self.id))
         self.text.setAlign(core.TextNode.ACenter)

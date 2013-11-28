@@ -21,6 +21,7 @@ import zmap
 import console
 import dorf
 import tools
+import designation
 
 #loadPrcFileData("", "want-directtools #t")
 #loadPrcFileData("", "want-tk #t")
@@ -41,9 +42,8 @@ class Dorfdelf(ShowBase):
         self.enableParticles()
 
         self.world = world.World(64, 64, 80)
-        self.world.generate()
         #self.world = world.World.load('test.world')
-
+        self.world.generate()
         self.world_geometry = geometry.WorldGeometry(self.world)
 
         self.camLens.setFocalLength(1)
@@ -65,12 +65,15 @@ class Dorfdelf(ShowBase):
 
         self.accept('console-command', self.console_command)
 
+        self.designation = designation.Designation()
+
         self.dorfs = []
         self.tool = lambda w, x, y, z: None
         self.toolargs = ()
         self.tools = {
             'bomb': tools.bomb,
             'block': tools.block,
+            'd': self.designation.add
         }
 
         self.console = console.Console(self)
