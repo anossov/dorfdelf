@@ -4,7 +4,7 @@
   "maya2egg2012 -o dorfPH.egg dorfPH.mb"
 }
 <Texture> "dorfPH:Material__25" {
-  dorfPH.png
+  media/textures/dorfPH.png
   <Scalar> format { rgb }
   <Scalar> wrapu { repeat }
   <Scalar> wrapv { repeat }

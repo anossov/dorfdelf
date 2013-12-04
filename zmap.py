@@ -15,20 +15,22 @@ class ZMap(DirectObject):
     def __init__(self, world, app):
         self.world = world
 
-        self.image = PNMImage(1, 256)
+        self.image = PNMImage(self.world.width, 256)
 
         for z in self.world.zlevels():
-            histogram = Counter(b.substance for x, y, b in self.world.slice(z))
-            top_substance = histogram.most_common(1)[0][0]
-            self.image.setXel(0, z, ZMap.COLORS[top_substance])
+            for x in range(self.world.height):
+                histogram = Counter(self.world.get_block(x, y, z).substance
+                                    for y in range(self.world.height))
+                top_substance = histogram.most_common(1)[0][0]
+                self.image.setXel(x, z, ZMap.COLORS[top_substance])
 
         self.texture = Texture()
         self.texture.load(self.image)
         self.texture.setMagfilter(Texture.FTNearest)
-        self.texture.setMinfilter(Texture.FTLinearMipmapLinear)
+        self.texture.setMinfilter(Texture.FTNearest)
 
         cm = CardMaker('zmap')
-        cm.setFrame(0.98, 1, -1, 1)
+        cm.setFrame(0.95, 1, -1, 1)
         cm.setUvRange(Point2(1.0, 1.0), Point2(0.0, 1.0 - self.world.depth / 256.0))
         self.zcard = app.render2d.attachNewNode(cm.generate())
         self.zcard.setTexture(self.texture)
@@ -41,5 +43,5 @@ class ZMap(DirectObject):
         self.accept('slice-changed', self.slice_changed)
 
     def slice_changed(self, slice, explore):
-        self.zpointer.setPos(0.97, 0.0, slice * 2.0 / self.world.depth - 1.0)
+        self.zpointer.setPos(0.95, 0.0, slice * 2.0 / self.world.depth - 1.0)
 

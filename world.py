@@ -6,6 +6,7 @@ import profilehooks
 
 import panda3d.core as core
 from direct.showbase.MessengerGlobal import messenger
+from direct.directnotify.DirectNotifyGlobal import directNotify
 
 
 DIRECTIONS = {
@@ -46,11 +47,9 @@ def load_forms():
             primitive = geom.getPrimitive(prim).decompose()
 
             for p in range(primitive.getNumPrimitives()):
-                pvs = []
                 for i in range(primitive.getPrimitiveStart(p), primitive.getPrimitiveEnd(p)):
                     vi = primitive.getVertex(i)
-                    pvs.append(vi)
-                indices.append(pvs)
+                    indices.append(vi)
 
         yield Form(name, vertices, indices)
 
@@ -168,7 +167,6 @@ class NullBlock(Block):
 class World(object):
     def __init__(self, width, height, depth):
         self.forms = {f.name: f for f in load_forms()}
-        print 'Registered forms: ', self.forms.keys()
         Block.FORMS = self.forms
         self.width = width
         self.height = height
@@ -177,7 +175,10 @@ class World(object):
         self.size = core.Point3(self.width, self.height, self.depth)
         self.midpoint = core.Point3(self.width // 2, self.height // 2, self.depth // 2)
 
-        self.blocks = [None for _ in self.grid()]
+        self.blocks = {coords: None for coords in self.grid()}
+
+        self.notify = directNotify.newCategory('world')
+        messenger.accept('console-command', self, self.command)
 
     def __contains__(self, item):
         x, y, z = item
@@ -187,30 +188,26 @@ class World(object):
             (0 <= z < self.depth)
         )
 
-    def _block_index(self, x, y, z):
-        return int(x) * self.height * self.depth + int(y) * self.depth + int(z)
-
     def get_raw(self, x, y, z):
-        return self.blocks[self._block_index(x, y, z)]
+        return self.blocks[(x, y, z)]
 
     def get_block(self, x, y, z):
         p = (x, y, z)
         if p not in self:
             return NullBlock(None, None, False, p, self)
 
-        b = self.blocks[self._block_index(x, y, z)]
+        b = self.get_raw(x, y, z)
         return Block(b[0], b[1], b[2], p, self)
 
     def set_block(self, x, y, z, form, substance, hidden, update_hidden=True):
         if (x, y, z) not in self:
             return False
 
-        i = self._block_index(x, y, z)
-        old = self.blocks[i]
+        old = self.blocks[(x, y, z)]
         new = (form, substance, hidden)
 
         if old != new:
-            self.blocks[i] = new
+            self.blocks[(x, y, z)] = new
             messenger.send('block-update', [(x, y, z)])
 
             if update_hidden:
@@ -277,13 +274,14 @@ class World(object):
         return True
 
     def generate(self):
+        self.notify.info('Generation started')
         fbm = core.StackedPerlinNoise2(100, 100, 5, 2.01, 0.65)
         for x, y in self.columns():
             h = fbm.noise(x, y) * 20 + self.midpoint.z
             h2 = fbm.noise(x, y) * 7 + self.midpoint.z
 
             for z in range(self.depth):
-                i = self._block_index(x, y, z)
+                i = (x, y, z)
                 if z > max(h, h2):
                     self.blocks[i] = (self.forms['Void'], Substance.AIR, False)
                 elif h < z < h2:
@@ -291,19 +289,32 @@ class World(object):
                 else:
                     self.blocks[i] = (self.forms['Block'], Substance.STONE, True)
 
+        self.notify.info('Making ramps')
         for x, y, z in self.grid():
             if z > 0:
                 f = self.get_raw(x, y, z)[0]
-                fd = self.get_raw(x, y, z - 1)[0]
+                fd, sd, _ = self.get_raw(x, y, z - 1)
                 if f.name == 'Void':
                     if fd.name == 'Block':
-                        self.make_ramp(x, y, z, False)
+                        if not self.make_ramp(x, y, z, False):
+                            if sd == Substance.DIRT:
+                                self.set_block(x, y, z, self.forms['Floor'], sd, False, False)
 
+        self.notify.info('Updating hidden blocks')
         for x, y, z in self.grid():
             f, s, h = self.get_raw(x, y, z)
             if f.name == 'Block':
                 self.update_hidden(x, y, z)
                 continue
+        self.notify.info('Generation complete')
+
+    def command(self, args):
+        args = list(args)
+        cmd = args.pop(0)
+
+        if cmd == 'save':
+            fn = args.pop(0)
+            self.save(fn)
 
     @staticmethod
     def load(fn):
@@ -314,7 +325,7 @@ class World(object):
         f = data['forms']
 
         for (x, y, z, b), datum in zip(w.all(), data['data']):
-            i = w._block_index(x, y, z)
+            i = (x, y, z)
             form, substance, hidden = datum
             w.blocks[i] = (w.forms[f[form]], substance, hidden)
 

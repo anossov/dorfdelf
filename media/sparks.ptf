@@ -27,7 +27,7 @@ p0.factory.setTerminalVelocitySpread(100.0000)
 p0.renderer.setAlphaMode(BaseParticleRenderer.PRALPHAOUT)
 p0.renderer.setUserAlpha(1.00)
 # Sprite parameters
-p0.renderer.addTextureFromFile('/e/Projects/Fortress-pyproto/media/spark.png')
+p0.renderer.addTextureFromFile('media/textures/spark.png')
 p0.renderer.setColor(Vec4(1.00, 1.00, 1.00, 1.00))
 p0.renderer.setXScaleFlag(1)
 p0.renderer.setYScaleFlag(1)

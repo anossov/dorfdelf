@@ -1,14 +1,19 @@
 from __future__ import division
 import itertools
 import math
+import struct
 from profilehooks import profile
 
 import panda3d.core as core
 from direct.showbase.DirectObject import DirectObject
 from direct.task.TaskManagerGlobal import taskMgr
 from direct.showbase.MessengerGlobal import messenger
+from direct.directnotify.DirectNotifyGlobal import directNotify
 
 import world
+
+
+notify = directNotify.newCategory('geometry')
 
 
 class GeomBuilder(object):
@@ -16,17 +21,22 @@ class GeomBuilder(object):
         self.name = name
         self.master = master
         self.primitive = core.GeomTriangles(core.Geom.UHStatic)
+        self.primitive.setIndexType(core.Geom.NTUint32)
+        self.indices = []
 
     def add_block(self, x, y, form, hidden):
         if hidden:
             form = world.Block.FORMS['Hidden']
         else:
             form = form
-        for prim in form.indices:
-            offset = self.master.index_offset(x, y, form)
-            self.primitive.addVertices(*[i + offset for i in prim])
+        offset = self.master.index_offset(x, y, form)
+        self.indices.extend([i + offset for i in form.indices])
 
     def build(self):
+        array = self.primitive.modifyVertices()
+        fmt = array.getArrayFormat().getFormatString()
+        data = struct.pack(fmt * len(self.indices), *self.indices)
+        array.modifyHandle().setData(data)
         geom = core.Geom(self.master.vertexdata)
         geom.addPrimitive(self.primitive)
         gnode = core.GeomNode('{}-node'.format(self.name))
@@ -36,6 +46,7 @@ class GeomBuilder(object):
 
 class MasterChunk(object):
     def __init__(self, size, forms):
+        notify.info('Building the Master Chunk')
         self.size = size
         self.vertexformat = core.GeomVertexFormat.getV3n3t2()
         self.vertexdata = core.GeomVertexData('MasterChunk', self.vertexformat, core.Geom.UHStatic)
@@ -46,26 +57,24 @@ class MasterChunk(object):
 
         self.index_offsets = {}
 
-        total = 0
-        for form in forms:
-            self.index_offsets[form.name] = total
-            total += form.num_vertices
-
-        self.stride = total
-
+        i = 0
         for x, y in itertools.product(range(self.size), range(self.size)):
             for form in forms:
+                self.index_offsets[(x, y, form.name)] = i
                 for v, n, t in form.vertices:
                     vertex_writer.addData3f(v[0] + x, v[1] + y, v[2])
                     normal_writer.addData3f(*n)
                     texcoord_writer.addData2f(*t)
+                i += form.num_vertices
+
+        notify.info('Master Chunk building complete')
 
     def index_offset(self, x, y, form):
-        return self.stride * (x * self.size + y) + self.index_offsets[form.name]
+        return self.index_offsets[(x, y, form.name)]
 
 
 class Slice(core.NodePath):
-    chunk_size = 16
+    chunk_size = 32
     master = None
 
     def __init__(self, world, z):
@@ -98,6 +107,7 @@ class Slice(core.NodePath):
         self.show_stale_chunks = False
 
         self.updates = set()
+        self.first_update_done = False
 
         self.task = taskMgr.add(self.perform_updates, 'Slice update')
 
@@ -113,9 +123,11 @@ class Slice(core.NodePath):
         for cx, cy in itertools.product(range(self.world.width // self.chunk_size), range(self.world.height // self.chunk_size)):
             self.build_chunk(cx, cy)
 
-    def update_if_empty(self):
-        if not self.hidden_chunks:
+    def first_update(self):
+        if not self.first_update_done:
             self.update_all()
+            self.first_update_done = True
+
 
     def destroy(self):
         messenger.ignoreAll(self)
@@ -134,12 +146,11 @@ class Slice(core.NodePath):
             if not substance:
                 continue
 
-            if substance not in builders:
-                builders[substance] = GeomBuilder('slice-{}-geom-{}'.format(self.z, substance), self.master)
-
             if hidden:
                 builder = hbuilder
             else:
+                if substance not in builders:
+                    builders[substance] = GeomBuilder('slice-{}-geom-{}'.format(self.z, substance), self.master)
                 builder = builders[substance]
 
             builder.add_block(x, y, form, hidden)
@@ -208,6 +219,8 @@ class Slice(core.NodePath):
 
 class WorldGeometry(DirectObject):
     def __init__(self, world):
+        notify.info('Initializing world geometry')
+
         self.world = world
         self.node = core.NodePath('world')
         shader = core.Shader.load(core.Shader.SLGLSL, 'media/shaders/vertex.glsl', 'media/shaders/fragment.glsl')
@@ -232,6 +245,8 @@ class WorldGeometry(DirectObject):
         self.accept('entity-z-change', self.reparent_entity)
         self.accept('designation-add', self.designation)
 
+        notify.info('Initializing world geometry complete')
+
     def destroy(self):
         for s in self.slices:
             s.destroy()
@@ -242,9 +257,12 @@ class WorldGeometry(DirectObject):
         for i, s in enumerate(self.slices):
             d = abs(current_slice - i)
             if explore:
-                s.show()
-                s.setShaderInput('color_scale', 1.0)
-                s.hide_hidden()
+                if s.chunks:
+                    s.show()
+                    s.setShaderInput('color_scale', 1.0)
+                    s.hide_hidden()
+                else:
+                    s.hide()
             else:
                 if d == 0:
                     s.show_hidden()
@@ -253,7 +271,7 @@ class WorldGeometry(DirectObject):
                 if i > current_slice or d > 5:
                     s.hide()
                 else:
-                    s.update_if_empty()
+                    s.first_update()
                     s.show()
                     if d:
                         v = 0.9 - d / 8.0

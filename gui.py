@@ -4,25 +4,30 @@ from direct.gui.OnscreenText import OnscreenText
 
 
 class GUI(DirectObject):
-    def new_text(self, x, y):
-        return OnscreenText(text='',
-                            pos=(x, y),
-                            scale=20,
-                            fg=(1, 1, 1, 1),
-                            shadow=(0.3, 0.3, 0.3, 1.0),
-                            align=core.TextNode.ALeft,
-                            mayChange=True,
-                            parent=self.parent)
+    def new_text(self, x, y, **kw):
+        defaults = dict(
+            text='',
+            pos=(x, y),
+            scale=30,
+            fg=(1, 1, 1, 1),
+            shadow=(0.3, 0.3, 0.3, 1.0),
+            align=core.TextNode.ALeft,
+            mayChange=True,
+            font=self.font,
+            parent=self.parent
+        )
+        defaults.update(kw)
+        return OnscreenText(**defaults)
 
-    def __init__(self, parent):
+    def __init__(self, parent, font):
         self.parent = parent
+        self.font = font
 
-        self.current_slice = self.new_text(20, -20)
-        self.block = self.new_text(20, -40)
+        self.current_slice = self.new_text(20, -40)
+        self.block = self.new_text(20, -70)
 
-        self.console = self.new_text(20, -60)
-        self.console_errortext = self.new_text(40, -80)
-        self.console_errortext.setFg((1, 0.5, 0.5, 1.0))
+        self.console = self.new_text(20, -100)
+        self.console_errortext = self.new_text(40, -130, fg=(1, 0.5,  0.5, 1.0))
 
         self.accept('slice-changed', self.slice_changed)
         self.accept('block-hover', self.block_hover)
@@ -43,4 +48,7 @@ class GUI(DirectObject):
     def console_error(self, e):
         self.console_errortext.setText(str(e))
         self.console_errortext.show()
-        self.doMethodLater(5.0, self.console_errortext.hide, name='hide console error text', extraArgs=[])
+        self.doMethodLater(5.0,
+                           self.console_errortext.hide,
+                           name='hide console error text',
+                           extraArgs=[])

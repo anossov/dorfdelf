@@ -1,11 +1,12 @@
 # -*- encoding: utf-8 -*-
 
-import itertools
 import random
 
 from direct.showbase.ShowBase import ShowBase
-from direct.showbase.DirectObject import DirectObject
 from direct.showbase.PythonUtil import bound
+from direct.gui.OnscreenText import OnscreenText
+from direct.directtools.DirectGeometry import LineNodePath
+from direct.directnotify.DirectNotifyGlobal import directNotify
 
 
 import panda3d.core as core
@@ -26,6 +27,8 @@ import designation
 #loadPrcFileData("", "want-directtools #t")
 #loadPrcFileData("", "want-tk #t")
 
+notify = directNotify.newCategory('dorfmain')
+
 
 class Dorfdelf(ShowBase):
     def __init__(self):
@@ -35,25 +38,50 @@ class Dorfdelf(ShowBase):
         self.win.requestProperties(wp)
 
         self.render.setAntialias(core.AntialiasAttrib.MAuto)
-       # self.render.setShaderAuto()
         self.setBackgroundColor(0.5, 0.5, 0.5)
-
         self.disableMouse()
         self.enableParticles()
 
-        self.world = world.World(64, 64, 80)
-        #self.world = world.World.load('test.world')
+        font = self.loader.loadFont('media/calibri.ttf')
+        font.setPixelsPerUnit(120)
+        font.setPageSize(512, 1024)
+        loading = OnscreenText(text='Loading...',
+                               scale=0.2,
+                               pos=(0.0, 0.0),
+                               fg=(1, 1, 1, 1),
+                               shadow=(0.3, 0.3, 0.3, 1.0),
+                               align=core.TextNode.ACenter,
+                               mayChange=True,
+                               font=font,
+                               parent=self.aspect2d)
+
+        self.graphicsEngine.renderFrame()
+        self.graphicsEngine.renderFrame()
+
+        loading.setText('Generating world')
+        self.graphicsEngine.renderFrame()
+        self.graphicsEngine.renderFrame()
+
+        self.world = world.World(128, 128, 100)
         self.world.generate()
+
+        loading.setText('Creating world geometry')
+        self.graphicsEngine.renderFrame()
+        self.graphicsEngine.renderFrame()
+
         self.world_geometry = geometry.WorldGeometry(self.world)
 
         self.camLens.setFocalLength(1)
-        self.camera.setPos(0, 0, 80)
-        self.camera.lookAt(self.world.midpoint.x, self.world.midpoint.y, 80)
+        self.camera.setPos(0, 0, 100)
+        self.camera.lookAt(self.world.midpoint.x, self.world.midpoint.y, 100)
         self.cam.setPos(0, 0, 0)
         self.cam.setHpr(0, -45, 0)
 
-        self.cc = camera.CameraController(self.world.size, self.taskMgr, self.mouseWatcherNode, self.camera, self.cam)
-        self.gui = gui.GUI(self.pixel2d)
+        self.cc = camera.CameraController(self.world.size,
+                                          self.mouseWatcherNode,
+                                          self.camera,
+                                          self.cam)
+        self.gui = gui.GUI(self.pixel2d, font)
         self.world_geometry.node.setPos(0, 0, 0)
         self.world_geometry.node.reparentTo(self.render)
 
@@ -82,7 +110,13 @@ class Dorfdelf(ShowBase):
 
         self.change_slice(0)
 
-        print 'Init done'
+        arrow = LineNodePath()
+        arrow.reparentTo(self.render)
+        arrow.drawArrow2d(Vec3(-5, -5, self.world.midpoint.z),
+                          Vec3(15, -5, self.world.midpoint.z),
+                          30, 3)
+        arrow.create()
+        loading.hide()
 
     def add_light(self):
         x, y = random.choice(list(self.world.columns()))
@@ -112,7 +146,6 @@ class Dorfdelf(ShowBase):
         self.accept('e', self.change_slice, [-1])
         self.accept('q', self.change_slice, [1])
         self.accept('tab', self.toggle_explore)
-        self.accept('f1', self.world.save, ['test.world'])
 
         self.accept('enter', self.open_console)
         self.accept('console-close', self.accept_keyboard)
@@ -123,7 +156,6 @@ class Dorfdelf(ShowBase):
         self.ignore('q-repeat')
         self.ignore('q')
         self.ignore('tab')
-        self.ignore('f1')
         self.ignore('enter')
 
     def open_console(self):
@@ -158,14 +190,10 @@ class Dorfdelf(ShowBase):
         if cmd == 'generate':
             self.world.generate()
             self.world_geometry.update_all()
-
         if cmd == 't':
             t = args.pop(0)
             self.tool = self.tools[t]
             self.toolargs = args
-
-        if cmd == 'light':
-            self.add_light()
 
     def toggle_explore(self):
         self.explore_mode = not self.explore_mode

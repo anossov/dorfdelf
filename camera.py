@@ -1,13 +1,14 @@
 import math
 
 from direct.showbase.DirectObject import DirectObject
+from direct.task.TaskManagerGlobal import taskMgr
 from direct.showbase.PythonUtil import bound
 
 from panda3d.core import Vec3, Point2
 
 
 class CameraController(DirectObject):
-    def __init__(self, extents, taskmgr, mouse, body, eye):
+    def __init__(self, extents, mouse, body, eye):
         self.extents = extents
         self.body = body
         self.eye = eye
@@ -36,7 +37,7 @@ class CameraController(DirectObject):
         self.accept('mouse2', self.start_zoom)
         self.accept('mouse2-up', self.end_zoom)
 
-        taskmgr.add(self.move_camera, "Move Camera")
+        taskMgr.add(self.move_camera, "Move Camera")
 
     def accept_keyboard(self):
         for k in self.keys:
