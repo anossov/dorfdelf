@@ -77,7 +77,8 @@ class Dorf(DirectObject):
     def set_next(self):
         x, y, z = self.x + self.dir[0], self.y + self.dir[1], self.z
         if (x, y, z) not in self.world or random.random() < 0.4:
-            ds = [((dx, dy), (self.x + dx, self.y + dy, self.z)) for dx, dy in [(1, 0), (0, 1), (0, -1), (-1, 0)]]
+            ds = [((dx, dy), (self.x + dx, self.y + dy, self.z))
+                  for dx, dy in [(1, 0), (0, 1), (0, -1), (-1, 0)]]
             self.dir, np = random.choice([(d, n) for d, n in ds if n in self.world])
             x, y, z = np
 

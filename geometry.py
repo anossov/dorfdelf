@@ -227,6 +227,11 @@ class WorldGeometry(DirectObject):
         self.node.setShader(shader)
         self.node.setShaderInput('color_scale', 1.0)
 
+        self.bordertexture = loader.loadTexture('media/textures/border.png',
+                                                anisotropicDegree=16,
+                                                minfilter=core.Texture.FTLinearMipmapLinear)
+        self.node.setShaderInput('border_texture', self.bordertexture)
+
         self.slices = []
 
         for z in range(self.world.depth):
@@ -264,10 +269,6 @@ class WorldGeometry(DirectObject):
                 else:
                     s.hide()
             else:
-                if d == 0:
-                    s.show_hidden()
-                else:
-                    s.hide_hidden()
                 if i > current_slice or d > 5:
                     s.hide()
                 else:
@@ -278,6 +279,11 @@ class WorldGeometry(DirectObject):
                         s.setShaderInput('color_scale', v)
                     else:
                         s.setShaderInput('color_scale', 1.0)
+
+                if d == 0:
+                    s.show_hidden()
+                else:
+                    s.hide_hidden()
 
     def block_update(self, pos):
         x, y, z = pos

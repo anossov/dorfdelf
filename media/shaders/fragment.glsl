@@ -7,6 +7,7 @@ in Data {
 } DataIn;
 
 uniform sampler2D p3d_Texture0;
+uniform sampler2D border_texture;
 uniform mat4 light;
 uniform mat4 p3d_ModelViewMatrix;
 uniform float color_scale;
@@ -88,7 +89,8 @@ vec3 degamma(vec3 color){
 void main() {
     vec3 n = normalize(DataIn.normal);
     vec4 tex_color = texture(p3d_Texture0, DataIn.texcoord);
-
+    vec4 border_color = texture(border_texture, DataIn.texcoord);
+    tex_color *= border_color;
     vec3 result = degamma(tex_color.rgb) * sh_light(n, beach);
     frag_color = vec4(gamma(result) * color_scale, tex_color.a);
 }

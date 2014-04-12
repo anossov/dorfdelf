@@ -1,8 +1,5 @@
 import itertools
-import random
 import json
-import sys
-import profilehooks
 
 import panda3d.core as core
 from direct.showbase.MessengerGlobal import messenger

@@ -19,10 +19,9 @@ class ZMap(DirectObject):
 
         for z in self.world.zlevels():
             for x in range(self.world.height):
-                histogram = Counter(self.world.get_block(x, y, z).substance
-                                    for y in range(self.world.height))
-                top_substance = histogram.most_common(1)[0][0]
-                self.image.setXel(x, z, ZMap.COLORS[top_substance])
+                mix = sum([ZMap.COLORS[self.world.get_block(x, y, z).substance]
+                          for y in range(self.world.height)], VBase3D(0.0))
+                self.image.setXel(x, z, mix / float(self.world.height))
 
         self.texture = Texture()
         self.texture.load(self.image)
