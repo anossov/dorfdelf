@@ -70,9 +70,6 @@ class Substance(object):
     AIR = 0
     DIRT = 1
     STONE = 2
-    '''
-    moddable; minable, drop table, etc
-    '''
 
 
 class Block(object):

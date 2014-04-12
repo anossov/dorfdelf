@@ -1,5 +1,3 @@
-from collections import Counter
-
 from direct.showbase.DirectObject import DirectObject
 
 from panda3d.core import Point2, VBase3D, PNMImage, Texture, CardMaker

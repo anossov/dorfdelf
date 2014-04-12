@@ -1,5 +1,3 @@
-import math
-
 from direct.showbase.DirectObject import DirectObject
 from direct.task.TaskManagerGlobal import taskMgr
 from direct.showbase.PythonUtil import bound

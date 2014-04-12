@@ -1,8 +1,6 @@
 from __future__ import division
 import itertools
-import math
 import struct
-from profilehooks import profile
 
 import panda3d.core as core
 from direct.showbase.DirectObject import DirectObject
