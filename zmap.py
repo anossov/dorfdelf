@@ -1,6 +1,6 @@
 from direct.showbase.DirectObject import DirectObject
 
-from panda3d.core import Point2, VBase3D, PNMImage, Texture, CardMaker
+from panda3d.core import Point2, VBase3D, PNMImage, Texture, CardMaker, LVecBase3f, LRGBColorf
 
 
 class ZMap(DirectObject):
@@ -19,7 +19,13 @@ class ZMap(DirectObject):
             for x in range(self.world.height):
                 mix = sum([ZMap.COLORS[self.world.get_block(x, y, z).substance]
                           for y in range(self.world.height)], VBase3D(0.0))
-                self.image.setXel(x, z, mix / float(self.world.height))
+                color_block = mix / float(self.world.height)
+                #print(color_block)
+                #self.image.setXel(int(x), int(z), mix / float(self.world.height))
+                self.image.setXel(
+                    int(x), int(z), 
+                    LRGBColorf(color_block[0], color_block[1], color_block[2])
+                    )
 
         self.texture = Texture()
         self.texture.load(self.image)
