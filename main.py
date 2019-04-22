@@ -42,7 +42,7 @@ class Dorfdelf(ShowBase):
         self.disableMouse()
         self.enableParticles()
 
-        font = self.loader.loadFont('media/calibri.ttf')
+        font = self.loader.loadFont('media/Carlito-Regular.ttf')
         font.setPixelsPerUnit(120)
         font.setPageSize(512, 1024)
         loading = OnscreenText(text='Loading...',
@@ -213,7 +213,7 @@ class Dorfdelf(ShowBase):
         try:
             self.tool(self.world, x, y, z, *self.toolargs)
         except Exception as e:
-            print e
+            print(e)
 
 
 app = Dorfdelf()
